@@ -1,22 +1,23 @@
 const express = require("express")
 const router = express.Router()
-const members = require("../Members")
+const admin = require("firebase-admin");
 
-router.get("/", (req, res) =>{
-    res.json(members)
-})
+router.get('/', (req, res) => {
+    const userCollection = admin.firestore().collection('users');
+  
+    userCollection.get()
+      .then((snapshot) => {
+        const users = [];
+        snapshot.forEach((doc) => {
+          users.push(doc.data());
+        });
+  
+        res.json(users);
+      })
+      .catch((error) => {
 
-router.get("/:id", (req, res) => {
-    const { id } = req.params;
-
-    const found = members.some(member => parseInt(id) === member.id);
-
-    if (found) {
-        const member = members.filter(member => parseInt(id) === member.id);
-        res.json(member);
-    } else {
-        res.status(400).json({ msg: "No member with the id of " + id });
-    }
-});
+        res.status(500).json({ error: 'Failed to fetch users' });
+      });
+  });
 
 module.exports = router
