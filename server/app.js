@@ -5,6 +5,7 @@ const cors = require("cors")
 const loginPage = require("./router/loginPage")
 const homePage = require("./router/homePage")
 const usersPage = require("./router/usersPage")
+const registerPage = require("./router/registerPage")
 const dotenv = require("dotenv")
 
 const port = process.env.PORT || 4200
@@ -19,6 +20,8 @@ app.use("/login", loginPage)
 app.use("/home", homePage)
 
 app.use("/users", usersPage)
+
+app.use('/register', registerPage)
 
 app.listen(port, ()=>{
     console.log("Server is runnig on", port)
