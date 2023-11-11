@@ -6,10 +6,11 @@ const loginPage = require("./router/loginPage")
 const homePage = require("./router/homePage")
 const usersPage = require("./router/usersPage")
 const registerPage = require("./router/registerPage")
+const loginWithSpotify = require("./router/loginWithSpotify")
 const dotenv = require("dotenv")
+dotenv.config()
 
 const port = process.env.PORT || 4200
-dotenv.config()
 
 app.use(express.json())
 app.use(cors())
@@ -22,6 +23,8 @@ app.use("/home", homePage)
 app.use("/users", usersPage)
 
 app.use('/register', registerPage)
+
+app.use('/loginWithSpotify', loginWithSpotify)
 
 app.listen(port, ()=>{
     console.log("Server is runnig on", port)

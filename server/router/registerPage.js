@@ -19,28 +19,26 @@ router.post("/", (req, res) => {
     userCollection.where('username', '==', username).get()
         .then((snapshot) => {
             if (!snapshot.empty) {
-                res.send('Username already exists. Please choose another username.');
+                res.status(400).json({ success: false, message: 'Username already exists. Please choose another username.' });
             } else {
-
                 const newUser = {
                     name: name,
                     username: username,
                     password: password
-
                 };
 
                 userCollection.add(newUser)
                     .then((docRef) => {
                         console.log('User registered with ID: ', docRef.id);
-                        res.redirect('/login');
+                        res.json({ success: true, message: 'Registration successful' });
                     })
                     .catch((error) => {
-                        res.send('Registration failed: ' + error.message);
+                        res.status(500).json({ success: false, message: 'Registration failed: ' + error.message });
                     });
             }
         })
         .catch((error) => {
-            res.send('Registration failed: ' + error.message);
+            res.status(500).json({ success: false, message: 'Registration failed: ' + error.message });
         });
 });
 
