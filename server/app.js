@@ -26,7 +26,8 @@ app.use('/home', homePage);
 app.use('/users', usersPage);
 app.use('/register', registerPage);
 app.use('/spotifyAccount', spotifyAccount);
-app.use("/approve", approve)
+app.use('/approve', approve);
+app.use('/getMusicListAsUserTypes', getMusicListAsUserTypes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
