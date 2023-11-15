@@ -1,9 +1,7 @@
 // routes/searchRouter.js
 
 const express = require('express');
-const fetch = require('node-fetch');
 const { spotifyApi } = require('../config/spotifyConfig'); // Adjust the path based on your project structure
-
 const router = express.Router();
 
 // Search function
