@@ -10,7 +10,6 @@ const usersPage = require('./router/usersPage');
 const registerPage = require('./router/registerPage');
 const spotifyAccount = require('./api/spotify');
 const approve = require("./router/approve")
-const getMusicListAsUserTypes = require('./router/getMusicListAsUserTypes');
 
 
 const dotenv = require('dotenv');
