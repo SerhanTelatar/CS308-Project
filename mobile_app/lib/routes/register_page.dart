@@ -22,15 +22,15 @@ class _RegisterPageState extends State<RegisterPage> {
     String email,
     String password,
   ) async {
-    final baseUrl = "http://10.0.2.2:4200"; // Update with your server's port
-    final registerEndpoint = "/register"; // Assuming your register route is "/register"
+    final baseUrl = "http://10.0.2.2:4200"; 
+    final registerEndpoint = "/register"; 
 
     try {
       final response = await http.post(
   Uri.parse('$baseUrl$registerEndpoint'),
   body: {
     'name': name,
-    'username': username, // Change from 'surname' to 'username'
+    'username': username, 
     'email': email,
     'password': password,
   },
@@ -40,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
         // Successful registration
         print('Registration successful. Awaiting approval.');
         Navigator.pushReplacementNamed(context, '/login');
-        // You can navigate to a success page or handle it as needed
+        
       } else {
         // Handle registration failure
         print(
@@ -101,7 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   try {
                     await _register(name, username, email, password);
                   } catch (e) {
-                    // Display error message in a SnackBar
+                    // Display error message in a SnackBar (need to work on it)
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Registration failed: $e'),
