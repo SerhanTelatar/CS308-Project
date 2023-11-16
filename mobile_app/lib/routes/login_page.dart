@@ -1,7 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+ Future<void> _login(String username, String password) async {
+  final baseUrl = "http://localhost:4200"; // Update with your server's port
+  final loginEndpoint = "/login"; // Assuming your login route is "/login"
+
+  try {
+    final response = await http.post(
+      Uri.parse('$baseUrl$loginEndpoint'),
+      body: {
+        'username': username,
+        'password': password,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Successful login
+      print('Login successful');
+    } else {
+      // Handle login failure
+      print('Login failed with status code ${response.statusCode}: ${response.body}');
+    }
+  } catch (e) {
+    // Handle other exceptions
+    print('Exception during login: $e');
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +51,12 @@ class LoginPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextFormField(
+              controller: _usernameController,
               decoration: InputDecoration(labelText: 'Username'),
             ),
             SizedBox(height: 16.0),
             TextFormField(
+              controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(labelText: 'Password'),
             ),
@@ -34,11 +72,26 @@ class LoginPage extends StatelessWidget {
               ],
             ),
             ElevatedButton(
-              onPressed: () {
-                // login button functionality here
-              },
-              child: Text('Login'),
-            ),
+              onPressed: () async {
+                String username = _usernameController.text;
+                String password = _passwordController.text;
+
+              try {
+                await _login(username, password);
+              } catch (e) {
+              // Display error message in a SnackBar
+                ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Login failed: $e'),
+                  duration: Duration(seconds: 3),
+                ),
+              );
+            }
+          },
+          child: Text('Login'),
+        ),
+    
+             
             SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
