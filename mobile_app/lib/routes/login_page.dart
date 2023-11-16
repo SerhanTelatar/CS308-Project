@@ -13,7 +13,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
 
  Future<void> _login(String username, String password) async {
-  final baseUrl = "http://localhost:4200"; // Update with your server's port
+  final baseUrl = "http://10.0.2.2:4200"; // Update with your server's port
   final loginEndpoint = "/login"; // Assuming your login route is "/login"
 
   try {
@@ -28,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
     if (response.statusCode == 200) {
       // Successful login
       print('Login successful');
+      Navigator.pushReplacementNamed(context, '/profile');
     } else {
       // Handle login failure
       print('Login failed with status code ${response.statusCode}: ${response.body}');
