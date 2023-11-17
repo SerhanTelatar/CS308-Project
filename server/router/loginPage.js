@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const path = require('path');
 const admin = require("../config/userDB");
+const bcrypt = require('bcrypt');
 
 router.use(express.static(path.join(__dirname, 'public')));
 
@@ -20,9 +21,13 @@ router.post('/', async (req, res) => {
 
         if (!userDoc.empty) {
             const userData = userDoc.docs[0].data();
+            const hashedPassword = userData.password;
+
+            // Compare hashed password
+            const passwordMatch = await bcrypt.compare(password, hashedPassword);
 
             // Compare plaintext password
-            if (password === userData.password) {
+            if (passwordMatch) {
                 // Successful login
                 res.json({ success: true, message: 'Login successful' });
             } else {

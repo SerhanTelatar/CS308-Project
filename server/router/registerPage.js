@@ -4,6 +4,7 @@ const path = require('path');
 const admin = require("firebase-admin");
 const nodemailer = require('nodemailer');
 const { validationResult } = require('express-validator');
+const bcrypt = require('bcrypt');
 
 router.use(express.static(path.join(__dirname, 'public')));
 
@@ -42,12 +43,19 @@ router.post("/", validateInputs, async (req, res) => {
       return res.status(400).json({ success: false, message: 'Username already exists. Please choose another username.' });
     }
 
+    // Generate a salt
+    const saltRounds = 10; // You can adjust this based on your security needs
+    const salt = await bcrypt.genSalt(saltRounds);
+
+    // Hash the password with the salt
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     // Add the new user to Firestore
     const newUser = {
       name: name,
       username: username,
       email: email,
-      password: password,
+      password: hashedPassword,
       isApproved: false,
     };
 
