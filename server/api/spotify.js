@@ -1,6 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const {spotifyApi} = require("../config/spotifyConfig")
+const axios = require('axios');
+const admin = require("firebase-admin");
+const db = admin.firestore()
 
 router.get('/', (req, res, next) => {
     res.redirect(spotifyApi.createAuthorizeURL([
@@ -52,7 +55,8 @@ router.get('/callback', async (req, res) => {
         // Store the access token for later use
 
         console.log('Successfully retrieved access token. Expires in', expires_in, 's.');
-        res.send('Success! You can now close the window.');
+        //res.send('Success! You can now close the window.');
+        res.status(200).json({msg:'Success! You can now close the window.'});
 
         // Schedule token refresh
         setInterval(async () => {
@@ -265,6 +269,16 @@ router.get('/album/:id', async (req, res) => {
   router.get('/playlist/:id', async (req, res) => {
     try {
       const data = await spotifyApi.getPlaylist(req.params.id);
+      res.json(data.body);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Something went wrong!' });
+    }
+  });
+
+  router.get('/user-playlists', async (req, res) => {
+    try {
+      const data = await spotifyApi.getUserPlaylists();
       res.json(data.body);
     } catch (error) {
       console.error(error);
@@ -742,4 +756,41 @@ router.get('/top-artists', async (req, res) => {
     }
   });
 
+  const fetchPlaylistAndSaveFeatures = async (playlistId) => {
+    try {
+      // Fetch playlist details
+      const playlistData = await spotifyApi.getPlaylist(playlistId);
+      const tracks = playlistData.body.tracks.items;
+  
+      // Extract track IDs
+      const trackIds = tracks.map((track) => track.track.id);
+  
+      // Fetch music features for each track ID
+      const audioFeaturesData = await spotifyApi.getAudioFeaturesForTracks(trackIds);
+  
+      // Save music features to Firestore
+      const audioFeaturesCollection = db.collection('audioFeatures');
+      audioFeaturesData.body.audio_features.forEach(async (audioFeature) => {
+        await audioFeaturesCollection.doc(audioFeature.id).set(audioFeature);
+      });
+  
+      return { success: true, message: 'Music features saved to Firestore!' };
+    } catch (error) {
+      console.error(error);
+      return { success: false, message: 'Failed to fetch or save music features.' };
+    }
+  };
+  
+  // Usage: Call this function with a playlist ID to save music features to Firestore
+  router.get('/save-music-features/:playlistId', async (req, res) => {
+    try {
+      const playlistId = req.params.playlistId;
+      const result = await fetchPlaylistAndSaveFeatures(playlistId);
+      res.json(result);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Something went wrong!' });
+    }
+  });
+  
 module.exports = router
