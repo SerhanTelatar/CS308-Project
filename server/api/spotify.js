@@ -792,5 +792,17 @@ router.get('/top-artists', async (req, res) => {
       res.status(500).json({ error: 'Something went wrong!' });
     }
   });
+
+  router.get('/song/:id', async (req, res) => {
+    try {
+      const trackId = req.params.id;
+      const data = await spotifyApi.getTrack(trackId);
+      const songName = data.body.name;
+      res.json({ songName });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Something went wrong!' });
+    }
+  });
   
 module.exports = router
