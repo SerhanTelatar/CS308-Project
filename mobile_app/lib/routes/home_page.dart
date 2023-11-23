@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/components/app_drawer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,76 +14,12 @@ class HomePage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.person),
             onPressed: () {
-              Navigator.pushNamed(
-                  context, '/profile'); // Navigate to the login page
+              Navigator.pushNamed(context, '/profile');
             },
           ),
         ],
       ),
-        drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.white,
-              ),
-              child: Center(
-                child: Image.asset('assets/logo.png')
-              ),
-            ),
-            ListTile(
- 
-              title: Text('Homepage'),
-              onTap: () {
-                Navigator.of(context).pushReplacementNamed('/home');
-              },
-            ),
-            ListTile(
-
-              title: Text('Search'),
-              onTap: () {
-                Navigator.of(context).pushReplacementNamed('/search');
-              },
-            ),
-            ListTile(
-
-              title: Text('Settings'),
-              onTap: () {
-                Navigator.of(context).pushReplacementNamed('/settings');
-              },
-            ),
-            ListTile(
- 
-              title: Text('Support'),
-              onTap: () {
-                Navigator.of(context).pushReplacementNamed('/support');
-              },
-            ),
-            Divider(), // Ayırıcı
-            ListTile(
-   
-              title: Text('Logout'),
-              onTap: () {
-                // Çıkış işlemleri
-              },
-            ),
-            Divider(), // Ayırıcı
-            ListTile(
-
-              leading: CircleAvatar(
-                // Profil resmi
-                backgroundImage: AssetImage('assets/profile_pic.png'),
-              ),
-              title: Text('Profile'),
-              onTap: () {
-                Navigator.of(context).pushReplacementNamed('/profile');
-      
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: AppDrawer(), // Use the AppDrawer component
       body: Center(
         child: Text(
           'Welcome to the Home Page',

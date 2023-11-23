@@ -3,7 +3,7 @@ import 'package:mobile_app/routes/register_page.dart';
 import 'routes/home_page.dart';
 import 'routes/login_page.dart';
 import 'routes/profile_page.dart';
-import '/splash_screen.dart';
+import 'components/splash_screen.dart';
 
 
 void main() {
@@ -12,6 +12,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +28,8 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomePage(),
         '/login': (context) => LoginPage(),
         '/register': (context) => RegisterPage(), // Add route to RegisterPage
-        '/profile': (context) => ProfilePage(isUserLoggedIn: false),
+        '/profile': (context) => ProfilePage(username: '',),
       },
     );
-  }
+  } 
 }
