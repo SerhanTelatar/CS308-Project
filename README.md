@@ -1,4 +1,4 @@
-![test](GraphicalAssets/Riffy Horizontal Logo.png)
+![test](https://github.com/SerhanTelatar/CS308-Project/blob/8c6d0e13bd87d9b78d272c4cc58f032bb226199a/GraphicalAssets/Riffy%20Horizontal%20Logo.png)
 
 # Music Recommendation System
 
