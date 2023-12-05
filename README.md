@@ -1,10 +1,6 @@
 ![test](https://github.com/SerhanTelatar/CS308-Project/blob/8c6d0e13bd87d9b78d272c4cc58f032bb226199a/GraphicalAssets/Riffy%20Horizontal%20Logo.png)
 
-# Music Recommendation System
-
-## Overview
-
-The Music Recommendation System is an online platform designed to help users discover new music based on their preferences. It collects liked-song information from various sources, analyzes musical choices, and provides personalized recommendations.
+Riffy is a The Music Recommendation System is an online platform designed to help users discover new music based on their preferences. It collects liked-song information from various sources, analyzes musical choices, and provides personalized recommendations.
 
 ## Features
 
