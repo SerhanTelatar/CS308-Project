@@ -1,4 +1,4 @@
-![test](https://github.com/SerhanTelatar/CS308-Project/blob/8c6d0e13bd87d9b78d272c4cc58f032bb226199a/GraphicalAssets/Riffy%20Horizontal%20Logo.png)
+![test](https://github.com/SerhanTelatar/CS308-Project/blob/584b52c3ca650b7338096a533dab74b6ac4173fb/GraphicalAssets/Riffy%20Horizontal%20Logo.png)
 
 Riffy is a The Music Recommendation System is an online platform designed to help users discover new music based on their preferences. It collects liked-song information from various sources, analyzes musical choices, and provides personalized recommendations.
 
