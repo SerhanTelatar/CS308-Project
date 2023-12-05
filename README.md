@@ -1,3 +1,5 @@
+![test](GraphicalAssets/Riffy Horizontal Logo.png)
+
 # Music Recommendation System
 
 ## Overview
