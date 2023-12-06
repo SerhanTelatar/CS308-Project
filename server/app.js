@@ -11,6 +11,12 @@ const registerPage = require('./router/registerPage');
 const spotifyAccount = require('./api/spotify');
 const approve = require("./router/approve")
 const getMusicListAsUserTypes = require('./router/getMusicListAsUserTypes');
+const search = require("./router/getMusicListAsUserTypes")
+const album = require("./router/album")
+const music = require("./router/music")
+const rate = require("./router/rate")
+const artists = require("./router/artists")
+const followFriends = require("./router/followFriends")
 
 
 const dotenv = require('dotenv');
@@ -30,6 +36,12 @@ app.use('/register', registerPage);
 app.use('/spotifyAccount', spotifyAccount);
 app.use('/approve', approve);
 app.use('/getMusicListAsUserTypes', getMusicListAsUserTypes);
+app.use('/search', search)
+app.use("/album", album)
+app.use("/music", music)
+app.use("/rate", rate)
+app.use("/artists", artists)
+app.use("/follow", followFriends)
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -114,6 +114,21 @@ router.get('/album/:id', async (req, res) => {
       res.status(500).json({ error: 'Something went wrong!' });
     }
   });
+
+  router.post('/artist/:id', async (req, res) => {
+    try {
+      const artistId = req.params.id;
+      const artistData = await spotifyApi.getArtist(artistId);
+  
+      // Save the entire Spotify API response for the artist into Firestore
+      await db.collection('artists').doc(artistId).set(artistData.body);
+  
+      res.json({ message: 'Artist data saved to artists collection in Firestore' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Something went wrong!' });
+    }
+  });
   
   router.get('/artists/:ids', async (req, res) => {
     try {
@@ -137,7 +152,8 @@ router.get('/album/:id', async (req, res) => {
   
   router.get('/search-tracks/:query', async (req, res) => {
     try {
-      const data = await spotifyApi.searchTracks(req.params.query);
+      const limit = 10;
+      const data = await spotifyApi.searchTracks(req.params.query, { limit });
       res.json(data.body);
     } catch (error) {
       console.error(error);
@@ -147,7 +163,8 @@ router.get('/album/:id', async (req, res) => {
   
   router.get('/search-artists/:query', async (req, res) => {
     try {
-      const data = await spotifyApi.searchArtists(req.params.query);
+      const limit = 10;
+      const data = await spotifyApi.searchArtists(req.params.query, { limit });
       res.json(data.body);
     } catch (error) {
       console.error(error);
@@ -157,7 +174,8 @@ router.get('/album/:id', async (req, res) => {
   
   router.get('/search-tracks-by-artist/:query', async (req, res) => {
     try {
-      const data = await spotifyApi.searchTracks(`artist:${req.params.query}`);
+      const limit = 10;
+      const data = await spotifyApi.searchTracks(`artist:${req.params.query, { limit }}`);
       res.json(data.body);
     } catch (error) {
       console.error(error);
@@ -167,7 +185,8 @@ router.get('/album/:id', async (req, res) => {
   
   router.get('/search-tracks-by-artist-and-name/:artist/:track', async (req, res) => {
     try {
-      const data = await spotifyApi.searchTracks(`track:${req.params.track} artist:${req.params.artist}`);
+      const limit = 10;
+      const data = await spotifyApi.searchTracks(`track:${req.params.track} artist:${req.params.artist}`, { limit });
       res.json(data.body);
     } catch (error) {
       console.error(error);
@@ -177,7 +196,8 @@ router.get('/album/:id', async (req, res) => {
   
   router.get('/search-playlists/:query', async (req, res) => {
     try {
-      const data = await spotifyApi.searchPlaylists(req.params.query);
+      const limit = 10;
+      const data = await spotifyApi.searchPlaylists(req.params.query, { limit });
       res.json(data.body);
     } catch (error) {
       console.error(error);
@@ -295,98 +315,7 @@ router.get('/album/:id', async (req, res) => {
       res.status(500).json({ error: 'Something went wrong!' });
     }
   });
-  
-  router.post('/create-playlist', async (req, res) => {
-    try {
-      const data = await spotifyApi.createPlaylist(req.body.name, { description: req.body.description, public: req.body.public });
-      res.json({ message: 'Playlist created!', playlistId: data.body.id });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  router.post('/add-tracks-to-playlist/:id', async (req, res) => {
-    try {
-      const data = await spotifyApi.addTracksToPlaylist(req.params.id, req.body.tracks);
-      res.json({ message: 'Tracks added to playlist!' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
 
-  // Following Users and Artists methods
-router.get('/followed-artists', async (req, res) => {
-    try {
-      const data = await spotifyApi.getFollowedArtists({ limit: 1 });
-      res.json({ total: data.body.artists.total, artists: data.body.artists.items });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  router.post('/follow-users', async (req, res) => {
-    try {
-      const data = await spotifyApi.followUsers(req.body.userIds);
-      res.json(data.body);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  router.post('/follow-artists', async (req, res) => {
-    try {
-      const data = await spotifyApi.followArtists(req.body.artistIds);
-      res.json(data.body);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  router.post('/unfollow-users', async (req, res) => {
-    try {
-      const data = await spotifyApi.unfollowUsers(req.body.userIds);
-      res.json(data.body);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  router.post('/unfollow-artists', async (req, res) => {
-    try {
-      const data = await spotifyApi.unfollowArtists(req.body.artistIds);
-      res.json(data.body);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  router.get('/is-following-users/:userIds', async (req, res) => {
-    try {
-      const data = await spotifyApi.isFollowingUsers(req.params.userIds.split(','));
-      res.json({ isFollowing: data.body });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  router.get('/is-following-artists/:artistIds', async (req, res) => {
-    try {
-      const data = await spotifyApi.isFollowingArtists(req.params.artistIds.split(','));
-      res.json({ isFollowing: data.body });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
   // Your Music library methods
   router.get('/my-saved-tracks', async (req, res) => {
     try {
@@ -494,224 +423,41 @@ router.get('/new-releases', async (req, res) => {
       res.status(500).json({ error: 'Something went wrong!' });
     }
   });
-  
-  router.get('/categories', async (req, res) => {
-    try {
-      const data = await spotifyApi.getCategories({
-        limit: 5,
-        offset: 0,
-        country: 'SE',
-        locale: 'sv_SE'
-      });
-      res.json(data.body);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  router.get('/category/:categoryId', async (req, res) => {
-    try {
-      const data = await spotifyApi.getCategory(req.params.categoryId, {
-        country: 'SE',
-        locale: 'sv_SE'
-      });
-      res.json(data.body);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  router.get('/playlists-for-category/:categoryId', async (req, res) => {
-    try {
-      const data = await spotifyApi.getPlaylistsForCategory(req.params.categoryId, {
-        country: 'BR',
-        limit: 2,
-        offset: 0
-      });
-      res.json(data.body);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
+   
   router.get('/recommendations', async (req, res) => {
     try {
+      // Fetch user's ratings from Firestore
+      const userId = req.query.userId; 
+      const userDoc = await admin.firestore().collection('users').doc(userId).get();
+      
+      if (!userDoc.exists) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      const userData = userDoc.data();
+      const { ratings } = userData;
+
+      // Extract unique artist IDs from user's ratings
+      const seedArtists = [...new Set(ratings.map((rating) => rating.artistId))];
+      
+      // Use the extracted artist IDs as seed_artists for Spotify recommendations
       const data = await spotifyApi.getRecommendations({
-        min_energy: 0.4,
-        seed_artists: ['6mfK6Q2tzLMEchAr0e9Uzu', '4DYFVNKZ1uixa6SQTvzQwJ'],
-        min_popularity: 50
+        seed_artists: seedArtists,
+        limit: 5
       });
-      res.json(data.body);
+
+      res.json(data.body.tracks);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Something went wrong!' });
     }
   });
+  
   
   router.get('/available-genre-seeds', async (req, res) => {
     try {
       const data = await spotifyApi.getAvailableGenreSeeds();
       res.json(data.body);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  // Player methods
-  router.get('/devices', async (req, res) => {
-    try {
-      const data = await spotifyApi.getMyDevices();
-      res.json(data.body.devices);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  router.get('/current-playback-state', async (req, res) => {
-    try {
-      const data = await spotifyApi.getMyCurrentPlaybackState();
-      res.json({ isPlaying: data.body.is_playing });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  router.get('/recently-played-tracks', async (req, res) => {
-    try {
-      const data = await spotifyApi.getMyRecentlyPlayedTracks({ limit: 20 });
-      res.json({ recentlyPlayed: data.body.items.map(item => item.track) });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  router.get('/current-playing-track', async (req, res) => {
-    try {
-      const data = await spotifyApi.getMyCurrentPlayingTrack();
-      res.json({ nowPlaying: data.body.item.name });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-
-
-// Add an Item to the User's Playback Queue
-router.post('/add-to-queue', async (req, res) => {
-    try {
-      const data = await spotifyApi.addToQueue(req.body.trackUri);
-      res.json({ message: 'Track added to the playback queue!' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  // Pause a User's Playback
-  router.put('/pause', async (req, res) => {
-    try {
-      await spotifyApi.pause();
-      res.json({ message: 'Playback paused!' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  // Seek To Position In Currently Playing Track
-  router.put('/seek', async (req, res) => {
-    try {
-      const positionMs = req.body.positionMs || 0;
-      await spotifyApi.seek(positionMs);
-      res.json({ message: `Seek to ${positionMs} milliseconds!` });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  // Set Repeat Mode On User’s Playback
-  router.put('/set-repeat', async (req, res) => {
-    try {
-      const repeatMode = req.body.repeatMode || 'off';
-      await spotifyApi.setRepeat(repeatMode);
-      res.json({ message: `Repeat mode set to ${repeatMode}!` });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  // Set Volume For User's Playback
-  router.put('/set-volume', async (req, res) => {
-    try {
-      const volumePercent = req.body.volumePercent || 100;
-      await spotifyApi.setVolume(volumePercent);
-      res.json({ message: `Volume set to ${volumePercent}!` });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  // Skip User’s Playback To Next Track
-  router.post('/skip-to-next', async (req, res) => {
-    try {
-      await spotifyApi.skipToNext();
-      res.json({ message: 'Skip to the next track!' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  // Skip User’s Playback To Previous Track
-  router.post('/skip-to-previous', async (req, res) => {
-    try {
-      await spotifyApi.skipToPrevious();
-      res.json({ message: 'Skip to the previous track!' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  // Start/Resume a User's Playback
-  router.put('/play', async (req, res) => {
-    try {
-      await spotifyApi.play();
-      res.json({ message: 'Playback started or resumed!' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  // Toggle Shuffle For User’s Playback
-  router.put('/toggle-shuffle', async (req, res) => {
-    try {
-      const shuffle = req.body.shuffle || false;
-      await spotifyApi.setShuffle(shuffle);
-      res.json({ message: `Shuffle is ${shuffle ? 'on' : 'off'}.` });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
-  });
-  
-  // Transfer a User's Playback
-  router.put('/transfer-playback', async (req, res) => {
-    try {
-      const deviceIds = req.body.deviceIds || [];
-      await spotifyApi.transferMyPlayback(deviceIds);
-      res.json({ message: 'Playback transferred to specified devices!' });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Something went wrong!' });
@@ -804,5 +550,51 @@ router.get('/top-artists', async (req, res) => {
       res.status(500).json({ error: 'Something went wrong!' });
     }
   });
+
+router.get('/search-music', async (req, res) => {
+  try {
+      const searchText = req.query.text;
+      
+      // Search for tracks based on the provided text
+      const data = await spotifyApi.searchTracks(searchText, { limit: 10 });
+
+      // Extract relevant information for the 10 tracks found
+      const tracks = data.body.tracks.items.map((track) => {
+          return {
+              name: track.name,
+              artists: track.artists.map((artist) => artist.name).join(', '),
+              album: track.album.name,
+              preview_url: track.preview_url, // This may be null if there's no preview available
+          };
+      });
   
+      res.json(tracks);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Something went wrong!' });
+  }
+});
+
+router.post('/save-music/:id', async (req, res) => {
+  try {
+      const trackId = req.params.id;
+
+      // Fetch the details of the track using the provided track ID
+      const trackData = await spotifyApi.getTrack(trackId);
+      const trackDetails = {name: trackData.body.name.toLowerCase()};
+
+      // Reference the Firestore collection where you want to store the tracks
+      const tracksCollection = db.collection('music');
+
+      // Save the track details to Firestore using the track ID as the document ID
+      await tracksCollection.doc(trackId).set(trackDetails);
+
+      res.json({ message: 'Music track saved to Firestore!' });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Something went wrong!' });
+  }
+});
+
+
 module.exports = router

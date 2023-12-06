@@ -66,6 +66,7 @@ router.get('/username/:username', (req, res) => {
     });
 });
 
+// you dont need it
 // POST create a new user
 router.post('/', (req, res) => {
   const { name, username, password } = req.body;
@@ -109,6 +110,19 @@ router.put('/:id', (req, res) => {
     })
     .catch((error) => {
       res.status(500).json({ success: false, message: 'Failed to update user' });
+    });
+});
+
+router.delete('/:id', (req, res) => {
+  const userId = req.params.id;
+  const userCollection = admin.firestore().collection('users');
+
+  userCollection.doc(userId).delete()
+    .then(() => {
+      res.json({ success: true, message: 'User deleted successfully' });
+    })
+    .catch((error) => {
+      res.status(500).json({ success: false, message: 'Failed to delete user' });
     });
 });
 
