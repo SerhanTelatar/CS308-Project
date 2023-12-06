@@ -10,50 +10,51 @@ class AppDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
             ),
             child: Center(child: Image.asset('assets/images/logo.png')),
           ),
           ListTile(
-            title: Text('Homepage'),
+            title: const Text('Homepage'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed('/home');
             },
           ),
           ListTile(
-            title: Text('Search'),
+            title: const Text('Search'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed('/search');
             },
           ),
           ListTile(
-            title: Text('Settings'),
+            title: const Text('Settings'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed('/settings');
             },
           ),
           ListTile(
-            title: Text('Support'),
+            title: const Text('Support'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed('/support');
             },
           ),
-          Divider(), // Separator
+          const Divider(), // Ayırıcı
           ListTile(
-            title: Text('Logout'),
+            title: const Text('Logout'),
             onTap: () {
-              // Logout operations
+              // Çıkış işlemleri
             },
           ),
-          Divider(), // Separator
+          const Divider(), // Ayırıcı
           ListTile(
-            leading: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/logo.png'),
+            leading: const CircleAvatar(
+              // Profil resmi
+              backgroundImage: AssetImage('assets/profile_pic.png'),
             ),
-            title: Text('Profile'),
+            title: const Text('Profile'),
             onTap: () {
-              Navigator.pushNamed(context, '/profile');//use this one to make it work with navigation correctly
+              Navigator.of(context).pushReplacementNamed('/profile');
             },
           ),
         ],
