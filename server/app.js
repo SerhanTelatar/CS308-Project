@@ -17,6 +17,7 @@ const artists = require("./router/artists")
 const followFriends = require("./router/followFriends")
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
+const recommendation = require("./router/recommendation")
 
 dotenv.config();
 // Middleware
@@ -40,6 +41,8 @@ app.use("/music", music)
 app.use("/rate", rate)
 app.use("/artists", artists)
 app.use("/follow", followFriends)
+app.use("/recommendation", recommendation)
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

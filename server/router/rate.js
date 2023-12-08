@@ -28,7 +28,7 @@ router.get('/:userId', async (req, res) => {
   
 
 router.post('/', async (req, res) => {
-    const { userId, musicId, rating , artistId} = req.body;
+  const { userId, musicId, rating} = req.body;
 
   try {
     // Assuming your collection in Firestore is named "users"
@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
 
     // Update the user's document with the new rating and music ID
     await userRef.update({
-      ratings: admin.firestore.FieldValue.arrayUnion({ musicId, rating , artistId}),
+      ratings: admin.firestore.FieldValue.arrayUnion({ musicId, rating}),
     });
 
     res.status(200).json({ message: 'Rating added successfully' });

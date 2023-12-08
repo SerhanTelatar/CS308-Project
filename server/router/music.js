@@ -45,6 +45,31 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+
+router.post('/add-music', async (req, res) => {
+  try {
+    const { musicName, musicType, artist, userId } = req.body;
+
+    // Assuming you have a 'music' collection in your Firestore
+    const musicRef = db.collection('music');
+
+    const lowercaseMusicType = musicType.toLowerCase();
+
+    // Add the music information to Firestore
+    const newMusicRef = await musicRef.add({
+      musicName: musicName,
+      musicType: lowercaseMusicType,
+      artist: artist,
+      addedByUserId: userId // User ID who added this song
+      // You can add more fields as per your data structure
+    });
+
+    res.json({ success: true, message: 'Music added successfully', data: newMusicRef });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // this search on firestore database (our database)
 router.get('/search-music/:text', async (req, res) => {
     try {
@@ -53,7 +78,7 @@ router.get('/search-music/:text', async (req, res) => {
        
       // Query Firestore for music starting with or containing the provided text (case-insensitive)
       const snapshot = await db.collection('music')
-        .where("name", ">=", searchText)
+        .where("musicName", ">=", searchText)
         .get();    
         
 
@@ -75,6 +100,38 @@ router.get('/search-music/:text', async (req, res) => {
       res.status(500).json({ error: 'Something went wrong!' });
     }
 });
+
+router.delete('/delete-music/:musicId/:userId', async (req, res) => {
+  try {
+    const musicId = req.params.musicId;
+    const userId = req.params.userId;
+
+    // Assuming you have a 'music' collection in your Firestore
+    const musicRef = db.collection('music').doc(musicId);
+
+    // Get the document from Firestore
+    const doc = await musicRef.get();
+
+    if (!doc.exists) {
+      res.status(404).json({ success: false, error: 'Music not found' });
+    } else {
+      const addedByUserId = doc.data().addedByUserId;
+
+      // Check if the user deleting the music is the same as the user who added it
+      if (addedByUserId === userId) {
+        await musicRef.delete();
+        res.json({ success: true, message: 'Music deleted successfully' });
+      } else {
+        res.status(403).json({ success: false, error: 'Permission denied. You cannot delete this music' });
+      }
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+
+
 
 
 module.exports = router
