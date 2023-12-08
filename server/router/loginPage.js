@@ -28,8 +28,14 @@ router.post('/', async (req, res) => {
 
             // Compare plaintext password
             if (passwordMatch) {
-                // Successful login
-                res.json({ success: true, message: 'Login successful' });
+                // Include user info in the response
+                res.json({
+                    success: true,
+                    message: 'Login successful',
+                    username: userData,
+                    id: userDoc.docs[0].id
+                });
+
             } else {
                 // Incorrect password
                 res.status(401).json({ success: false, message: 'Login failed: Invalid username or password' });

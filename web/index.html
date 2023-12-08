@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Login</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Poppins', sans serif;
+        }
+
+        body {
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 90vh;
+        }
+
+        .container {
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            padding: 0 15px 0 15px;
+            color: aliceblue;
+        }
+
+        span {
+            color: pink;
+            font-size: small;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0 0 0;
+        }
+
+        header {
+            color: black;
+            font-size: 30px;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0 10px 0;
+            margin-bottom: 15px;
+        }
+
+        .input-field {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            margin-top: 15px;
+        }
+
+        .input-field .input {
+            height: 45px;
+            width: 87%;
+            border: none;
+            outline: none;
+            border-radius: 30px;
+            color: black;
+            padding: 0 0 0 42px;
+            background: rgba(232, 155, 212, 0.1);
+        }
+
+        .input-field i {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 17px;
+            color: #de8dd3;
+        }
+
+        ::-webkit-input-placeholder {
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        .submit {
+            border: 1px solid #e2d8e0;
+            border-radius: 30px;
+            font-size: 15px;
+            height: 45px;
+            outline: none;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: .3s;
+            color: #de8dd3;
+        }
+
+
+        .submit:hover {
+            box-shadow: 1px 5px 7px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-with-spotify {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .login-with-spotify button {
+            border: none;
+            border-radius: 30px;
+            font-size: 15px;
+            height: 45px;
+            outline: none;
+            width: 100%;
+            background: #1DB954;
+            cursor: pointer;
+            color: white;
+            transition: .3s;
+        }
+
+        .login-with-spotify button:hover {
+            box-shadow: 1px 5px 7px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        label a {
+            color: plum;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        header .logo {
+            width: 30px;
+            margin-right: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="box">
+        <div class="container">
+            <form action="/login" method="post">
+                <header>
+                    <img src="/logo.jpg" alt="Logo" class="logo"> Login
+                </header>
+                <div class="input-field">
+                    <input type="text" id="username" name="username" class="input" placeholder="Username" required>
+                    <i class="bx bx-user"></i>
+                </div>
+                <div class="input-field">
+                    <input type="password" id="password" name="password" class="input" placeholder="Password" required>
+                    <i class="bx bx-lock-alt"></i>
+                </div>
+                <div class="input-field">
+                    <input type="submit" class="submit" value="Login">
+                </div>
+                <div class="login-with-spotify">
+                    <button onclick="window.location.href='/spotifyAccount'">Login with Spotify</button>
+                </div>
+            </form>
+            <span><a href="/register">Don't have an account?</a></span>
+        </div>
+    </div>
+</body>
+
+</html>

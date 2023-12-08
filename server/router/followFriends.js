@@ -4,6 +4,30 @@ const router = express.Router();
 
 const db = admin.firestore();
 
+router.get('/search/:query', async (req, res) => {
+  const { query } = req.params;
+
+  try {
+    // Query users based on username or name
+    const usersSnapshot = await db.collection('users')
+      .where('username', '>=', query) // Change 'username' to the actual field name for username
+      .get();
+
+    const userList = [];
+    usersSnapshot.forEach((doc) => {
+      userList.push({
+        id: doc.id,
+        data: doc.data()
+      });
+    });
+
+    res.json(userList);
+  } catch (error) {
+    console.error('Error searching users', error);
+    res.status(500).json({ error: 'Error searching users' });
+  }
+});
+
 router.get('/following/:userId', async (req, res) => {
     const { userId } = req.params;
   
@@ -81,6 +105,7 @@ router.get('/following/:userId', async (req, res) => {
         friendFollowers.push(userId);
         await friendRef.update({ followers: friendFollowers });
       }
+
   
       res.json({ message: `You (${userId}) are now following friend (${friendId})` });
     } catch (error) {
@@ -126,8 +151,5 @@ router.get('/following/:userId', async (req, res) => {
     }
   });
   
-  
-  
-
   module.exports = router
   

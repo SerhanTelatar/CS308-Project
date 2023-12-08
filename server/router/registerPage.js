@@ -63,23 +63,28 @@ router.post("/", validateInputs, async (req, res) => {
     };
 
     const docRef = await userCollection.add(newUser);
-
     console.log('User registered with ID:', docRef.id);
 
+    // Retrieve the newly added user's information from Firestore
+    const newUserSnapshot = await docRef.get();
+    const registeredUser = {
+      id: newUserSnapshot.id,
+      ...newUserSnapshot.data()
+    };
+
     // Send email for approval
-    const approvalLink = `http://localhost:4200/approve/${docRef.id}`
-    console.log(approvalLink)
+    const approvalLink = `http://localhost:4200/approve/${registeredUser.id}`;
+    console.log(approvalLink);
     const mailOptions = {
-      from: 'softwareenginnering46@gmail.com',
+      from: 'softwareengineering46@gmail.com',
       to: req.body.email,
       subject: 'New User Registration for Approval',
       html: `<p>A new user has registered and is awaiting approval.</p><p>Please click <a href="${approvalLink}">here</a> to approve the registration.</p>`,
     };
-    
+
     await transporter.sendMail(mailOptions);
-    
-    
-    return res.status(201).json({ success: true, message: 'Registration successful. Awaiting approval.' });
+
+    return res.status(201).json({ success: true, message: 'Registration successful. Awaiting approval.', user: registeredUser });
   } catch (error) {
     console.error('Registration failed:', error.message);
     return res.status(500).json({ success: false, message: 'Registration failed: ' + error.message });

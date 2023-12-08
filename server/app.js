@@ -1,8 +1,6 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const morgan = require('morgan');
-const helmet = require('helmet');
 
 const loginPage = require('./router/loginPage');
 const homePage = require('./router/homePage');
@@ -17,17 +15,17 @@ const music = require("./router/music")
 const rate = require("./router/rate")
 const artists = require("./router/artists")
 const followFriends = require("./router/followFriends")
-
-
+const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
-dotenv.config();
 
+dotenv.config();
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
-//app.use(morgan('combined')); // Logging middleware
-//app.use(helmet()); // Security middleware
+app.use(cookieParser())
+
+
 
 app.use('/login', loginPage);
 app.use('/home', homePage);

@@ -4,6 +4,9 @@ const {spotifyApi} = require("../config/spotifyConfig")
 const axios = require('axios');
 const admin = require("firebase-admin");
 const db = admin.firestore()
+const fs = require('fs');
+const Papa = require('papaparse');
+const fileSystem = require('fs-extra');
 
 router.get('/', (req, res, next) => {
     res.redirect(spotifyApi.createAuthorizeURL([
@@ -577,11 +580,11 @@ router.get('/search-music', async (req, res) => {
 
 router.post('/save-music/:id', async (req, res) => {
   try {
-      const trackId = req.params.id;
+      const trackId = req.params.id;  
 
       // Fetch the details of the track using the provided track ID
       const trackData = await spotifyApi.getTrack(trackId);
-      const trackDetails = {name: trackData.body.name.toLowerCase()};
+      const trackDetails = trackData.body;
 
       // Reference the Firestore collection where you want to store the tracks
       const tracksCollection = db.collection('music');
@@ -593,6 +596,43 @@ router.post('/save-music/:id', async (req, res) => {
   } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Something went wrong!' });
+  }
+});
+
+router.post('/process-json', async (req, res) => {
+  try {
+    const { filePath } = req.body; // Assuming you're sending the file path in the request body
+
+    // Read the JSON file
+    const jsonData = await fileSystem.readFile(filePath, { encoding: 'utf-8' });
+
+    const rows = JSON.parse(jsonData);
+
+    // Iterate through each row in the JSON file
+    for (const row of rows) {
+      const searchText = row.name; // Assuming the name is a property in each row
+
+      // Search for tracks based on the provided text
+      const data = await spotifyApi.searchTracks(searchText, { limit: 1 });
+
+      if (data.body.tracks.items.length > 0) {
+        const track = data.body.tracks.items[0];
+        const trackDetails = {
+          name: track.name.toLowerCase(),
+          artists: track.artists.map((artist) => artist.name).join(', '),
+          album: track.album.name,
+          preview_url: track.preview_url,
+        };
+
+        // Save the track details to Firestore using the track ID as the document ID
+        await db.collection('music').doc(track.id).set(trackDetails);
+      }
+    }
+
+    res.json({ message: 'Music tracks processed and saved to Firestore!' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong!' });
   }
 });
 
