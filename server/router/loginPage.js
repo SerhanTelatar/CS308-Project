@@ -1,15 +1,15 @@
-// login.js
-
 const express = require('express');
 const router = express.Router();
 const admin = require('../config/userDB');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
+    const userData = req.session.user;
+
     if (req.session && req.session.user) {
         // User is logged in
-        res.json({ success: true, message: 'User is logged in' });
+        res.json({ success: true, message: 'User is logged in', userData });
     } else {
         // User is not logged in
         res.json({ success: false, message: 'User is not logged in' });

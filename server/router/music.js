@@ -64,6 +64,16 @@ router.post('/add-music', async (req, res) => {
       // You can add more fields as per your data structure
     });
 
+    // Assuming newMusicRef.id contains the newly added music's ID
+    const listenToRef = db.collection('listenTo');
+    
+    // Add userId and musicId to the 'listenTo' collection
+    await listenToRef.add({
+      userId: userId,
+      musicId: newMusicRef.id
+      // You can add more fields related to listening activity if needed
+    });
+
     res.json({ success: true, message: 'Music added successfully', data: newMusicRef });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
