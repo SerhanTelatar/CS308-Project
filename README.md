@@ -75,7 +75,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](https://gi
   
 - **Elif Özvarış** - *Frontend Developer* - [GitHub Profile Link](https://github.com/elifozv)
 - **Deniz Mecit** - *Frontend Developer* - [GitHub Profile Link](https://github.com/denizmecit)
-- **Derya Zeynep** - *Frontend Developer* - [GitHub Profile Link]
+- **Zeynep Derya Selçuk** - *Frontend Developer* - [GitHub Profile Link]
   
 - **Muslim Malsagov** - *Mobile Developer* - [GitHub Profile Link](https://github.com/Calvin-ctrl)
 - **Selin Ağan** - *Mobile Developer* - [GitHub Profile Link](https://github.com/selinbsa)
