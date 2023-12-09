@@ -1,34 +1,26 @@
 ![Riffy Logo Horizontal Orientation](https://github.com/SerhanTelatar/CS308-Project/blob/85c5a8426b91379ae742844caf477721e95d5081/wikiAssets/Riffy%20Horizontal%20Logo.png)
 
-Riffy is a The Music Recommendation System is an online platform designed to help users discover new music based on their preferences. It collects liked-song information from various sources, analyzes musical choices, and provides personalized recommendations.
+Riffy is an innovative music analyzer app designed to enhance and provide you with relevant music. It gathers your favorite songs from various platforms, offers detailed music analysis, and provides personalized recommendations utilizing various methods to come to these recommendations. With Riffy, rate songs, connect with friends to share music, and manage your playlists with ease. Plus, it seamlessly integrates with Spotify, thus enriching your listening experience.
 
 ## Features
 
-- **Data Collection:** Collect song information, including track names, performers, albums, and user ratings from various sources.
+- **Data Export**: Allows users to export their music data from the app.
 
-- **User Input:** Users can manually input song data through a user-friendly web or mobile application.
+- **Rating System**: Enables users to rate songs from 1 to 5, which aids in music recommendations.
 
-- **Batch Input:** Bulk song information can be uploaded via file formats, maintaining consistency with export formats.
+- **Friend System**: Allows users to connect, share, and explore music with friends.
 
-- **Data Import:** Connect to cloud or self-hosted databases to import song data.
+- **Multi-Platform Song Collection**: Aggregates users' liked songs from various platforms, creating a comprehensive music profile.
 
-- **Rating System:** Allows users to rate songs, albums, and performers and track changes in preferences over time.
+- **Personalized Music Analysis**: Offers in-depth analysis of users' musical tastes and preferences.
 
-- **Data Management:** Users can add, edit, or remove songs, albums, and performers with cascading removal.
+- **Playlist Management**: Facilitates importing and managing playlists for user convenience.
+  
+- **Spotify Integration**: Provides seamless integration with Spotify for an enhanced music experience.
 
-- **Analysis:** Provides statistical insights into users' music preferences and customizable data analysis dashboards.
+- **Versatile Song Addition**: Enables users to add songs manually, in batches, or through third-party integrations, offering flexibility in curating their music library.
 
-- **Recommendations:** Generates music recommendations based on user ratings, temporal properties, friend activity, and external sources.
-
-- **Authentication:** Supports password-based authentication and third-party authenticators like Google.
-
-- **Friendship:** Users can add friends and control the use of their ratings in recommendations.
-
-- **Result Sharing:** Share analysis results on social media platforms.
-
-- **Data Export:** Export song ratings based on filtering options.
-
-- **App Integrations:** Connect to third-party applications and services for additional features.
+- **And Many More to Come!**.
 
 ## Technology Stack
 
