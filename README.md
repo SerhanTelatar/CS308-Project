@@ -60,7 +60,7 @@ We currently do not have plans to include a way for people to contribute to our 
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/SerhanTelatar/CS308-Project/blob/9f7eaf012d7ef28485017198bcff2cca03a0164e/LICENSE.md) file for details.
 
 ## Contact Information
 
