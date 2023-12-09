@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:mobile_app/components/spotify_login_button.dart';
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
@@ -19,7 +21,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
@@ -33,47 +34,89 @@ class _RegisterPageState extends State<RegisterPage> {
     final registerEndpoint = "/register";
 
     try {
-  final response = await http.post(
-    Uri.parse('$baseUrl$registerEndpoint'),
-    body: {
-      'name': name,
-      'username': username,
-      'email': email,
-      'password': password,
-    },
-  );
+      final response = await http.post(
+        Uri.parse('$baseUrl$registerEndpoint'),
+        body: {
+          'name': name,
+          'username': username,
+          'email': email,
+          'password': password,
+        },
+      );
 
-  if (response.statusCode == 201) {
-    // Successful registration
-    print('Registration successful. Awaiting approval.');
-    Navigator.pushReplacementNamed(context, '/login');
-  } else {
-    // Handle registration failure
-    print(
-        'Registration failed with status code ${response.statusCode}: ${response.body}');
-    // Extract error message from response body
-    final Map<String, dynamic> responseBody = json.decode(response.body);
-    final String errorMessage = responseBody['message'] ?? 'Unknown error';
+      if (response.statusCode == 201) {
+        // Successful registration
+        print('Registration successful. Awaiting approval.');
+        Navigator.pushReplacementNamed(context, '/login');
+      } else {
+        // Handle registration failure
+        print(
+            'Registration failed with status code ${response.statusCode}: ${response.body}');
+        // Extract error message from response body
+        final Map<String, dynamic> responseBody = json.decode(response.body);
+        final String errorMessage = responseBody['message'] ?? 'Unknown error';
 
-    // Provide user feedback with a more specific error message
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('$errorMessage'),
-        duration: Duration(seconds: 3),
-      ),
-    );
+        // Provide user feedback with a more specific error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('$errorMessage'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    } catch (e) {
+      // Handle other exceptions
+      print('Exception during registration: $e');
+      // Provide user feedback for general errors
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Registration failed. Please try again.'),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
   }
-} catch (e) {
-  // Handle other exceptions
-  print('Exception during registration: $e');
-  // Provide user feedback for general errors
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text('Registration failed. Please try again.'),
-      duration: Duration(seconds: 3),
-    ),
-  );
-}
+
+  Future<void> _spotifyRegister() async {
+    final baseUrl = "http://10.0.2.2:4200";
+    final registerEndpoint = "/register";
+
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl$registerEndpoint'),
+      );
+
+      if (response.statusCode == 201) {
+        // Successful registration
+        print('Registration successful. Awaiting approval.');
+        Navigator.pushReplacementNamed(context, '/login');
+      } else {
+        // Handle registration failure
+        print(
+            'Registration failed with status code ${response.statusCode}: ${response.body}');
+        // Extract error message from response body
+        final Map<String, dynamic> responseBody = json.decode(response.body);
+        final String errorMessage = responseBody['message'] ?? 'Unknown error';
+
+        // Provide user feedback with a more specific error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('$errorMessage'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    } catch (e) {
+      // Handle other exceptions
+      print('Exception during registration: $e');
+      // Provide user feedback for general errors
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Registration failed. Please try again.'),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
   }
 
   @override
@@ -118,7 +161,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
-                    } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(value)) {
+                    } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
+                        .hasMatch(value)) {
                       return 'Please enter a valid email address';
                     }
                     return null;
@@ -131,7 +175,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: InputDecoration(
                     labelText: 'Password',
                     suffixIcon: IconButton(
-                      icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
+                      icon: Icon(_obscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off),
                       onPressed: () {
                         setState(() {
                           _obscurePassword = !_obscurePassword;
@@ -161,7 +207,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: InputDecoration(
                     labelText: 'Confirm Password',
                     suffixIcon: IconButton(
-                      icon: Icon(_obscureConfirmPassword ? Icons.visibility : Icons.visibility_off),
+                      icon: Icon(_obscureConfirmPassword
+                          ? Icons.visibility
+                          : Icons.visibility_off),
                       onPressed: () {
                         setState(() {
                           _obscureConfirmPassword = !_obscureConfirmPassword;
@@ -193,6 +241,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   },
                   child: Text('Register'),
                 ),
+                SizedBox(height: 16.0),
+                SpotifyLoginButton(
+                  onPressed: () => _spotifyRegister(),
+                )
               ],
             ),
           ),

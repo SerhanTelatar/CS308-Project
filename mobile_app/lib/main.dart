@@ -5,14 +5,12 @@ import 'routes/login_page.dart';
 import 'routes/profile_page.dart';
 import 'components/splash_screen.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +21,25 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       initialRoute: '/',
-      home: SplashScreen(),
+      home: SplashScreen(checkIfUserLoggedIn: checkIfUserLoggedIn()),
       routes: {
         '/home': (context) => HomePage(),
         '/login': (context) => LoginPage(),
-        '/register': (context) => RegisterPage(), // Add route to RegisterPage
-        '/profile': (context) => ProfilePage(username: '',),
+        '/register': (context) => RegisterPage(), 
+        '/profile': (context) => ProfilePage(
+              username: '',
+            ),
       },
     );
-  } 
+  }
+   bool checkIfUserLoggedIn()  {
+    
+    final baseUrl = "http://10.0.2.2:4200";
+    final endpoint = "/girisKontrol";
+    Uri.parse('$baseUrl$endpoint');
+    
+    return false; 
+  }
+
+
 }
