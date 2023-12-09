@@ -20,7 +20,7 @@ Riffy is an innovative music analyzer app designed to enhance and provide you wi
 
 - **Versatile Song Addition**: Enables users to add songs manually, in batches, or through third-party integrations, offering flexibility in curating their music library.
 
-- **And Many More to Come!**.
+**With Many More Features to Come!**.
 
 
 ## Technology Stack
@@ -71,7 +71,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](https://gi
   
 - **Serhan Emre Telatar** - *Backend Developer* - [GitHub Profile Link](https://github.com/SerhanTelatar)
 - **Can Ceylan** - *Backend Developer* - [GitHub Profile Link](https://github.com/CanCeylan2001)
-- **Ilgın Yıldırım** - *Backend Developer* - [GitHub Profile Link]
+- **Ilgın Yıldırım** - *Backend Developer* - [GitHub Profile Link](https://github.com/ilginyy)
   
 - **Elif Özvarış** - *Frontend Developer* - [GitHub Profile Link](https://github.com/elifozv)
 - **Deniz Mecit** - *Frontend Developer* - [GitHub Profile Link](https://github.com/denizmecit)
