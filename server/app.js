@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const session = require('express-session');
 
 const loginPage = require('./router/loginPage');
 const homePage = require('./router/homePage');
@@ -17,6 +18,8 @@ const artists = require("./router/artists")
 const followFriends = require("./router/followFriends")
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
+const recommendation = require("./router/recommendation")
+const playlist = require("./router/playlist")
 
 dotenv.config();
 // Middleware
@@ -25,7 +28,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(cookieParser())
 
-
+app.use(session({
+  secret: 'yourSecretKey',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Adjust this as per your needs
+}));
 
 app.use('/login', loginPage);
 app.use('/home', homePage);
@@ -40,6 +48,9 @@ app.use("/music", music)
 app.use("/rate", rate)
 app.use("/artists", artists)
 app.use("/follow", followFriends)
+app.use("/recommendation", recommendation)
+app.use("/playlist", playlist)
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

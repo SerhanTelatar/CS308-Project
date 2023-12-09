@@ -6,8 +6,6 @@ const nodemailer = require('nodemailer');
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 
-router.use(express.static(path.join(__dirname, 'public')));
-
 // Input validation middleware
 const validateInputs = (req, res, next) => {
   const errors = validationResult(req);
@@ -63,28 +61,23 @@ router.post("/", validateInputs, async (req, res) => {
     };
 
     const docRef = await userCollection.add(newUser);
+
     console.log('User registered with ID:', docRef.id);
 
-    // Retrieve the newly added user's information from Firestore
-    const newUserSnapshot = await docRef.get();
-    const registeredUser = {
-      id: newUserSnapshot.id,
-      ...newUserSnapshot.data()
-    };
-
     // Send email for approval
-    const approvalLink = `http://localhost:4200/approve/${registeredUser.id}`;
-    console.log(approvalLink);
+    const approvalLink = `http://localhost:4200/approve/${docRef.id}`
+    console.log(approvalLink)
     const mailOptions = {
-      from: 'softwareengineering46@gmail.com',
+      from: 'softwareenginnering46@gmail.com',
       to: req.body.email,
       subject: 'New User Registration for Approval',
       html: `<p>A new user has registered and is awaiting approval.</p><p>Please click <a href="${approvalLink}">here</a> to approve the registration.</p>`,
     };
-
+    
     await transporter.sendMail(mailOptions);
-
-    return res.status(201).json({ success: true, message: 'Registration successful. Awaiting approval.', user: registeredUser });
+    
+    
+    return res.status(201).json({ success: true, message: 'Registration successful. Awaiting approval.' });
   } catch (error) {
     console.error('Registration failed:', error.message);
     return res.status(500).json({ success: false, message: 'Registration failed: ' + error.message });

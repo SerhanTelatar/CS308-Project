@@ -599,6 +599,46 @@ router.post('/save-music/:id', async (req, res) => {
   }
 });
 
+const fetchPlaylistAndSaveTracks = async (playlistId) => {
+  try {
+    // Get details of the playlist
+    const playlistData = await spotifyApi.getPlaylist(playlistId);
+    const tracks = playlistData.body.tracks.items;
+
+    // Choose the Firestore collection where you want to store the tracks
+    const tracksCollection = db.collection('music');
+
+    // Save all the tracks to Firestore
+    for (const track of tracks) {
+      const trackId = track.track.id;
+      const trackData = await spotifyApi.getTrack(trackId);
+      const trackDetails = trackData.body;
+      await tracksCollection.doc(trackId).set(trackDetails);
+    }
+
+    return { success: true, message: 'Playlist songs saved to Firestore!' };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: 'Songs could not be retrieved or saved.' };
+  }
+};
+
+// Usage: Call this function with the playlist ID to save all the songs to Firestore
+router.post('/save-musics/:playlistId', async (req, res) => {
+  try {
+    const playlistId = req.params.playlistId;
+
+    // Save playlist songs to Firestore
+    const result = await fetchPlaylistAndSaveTracks(playlistId);
+
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong!' });
+  }
+});
+
+
 router.post('/process-json', async (req, res) => {
   try {
     const { filePath } = req.body; // Assuming you're sending the file path in the request body
