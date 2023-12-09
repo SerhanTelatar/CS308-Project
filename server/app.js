@@ -20,6 +20,7 @@ const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const recommendation = require("./router/recommendation")
 const playlist = require("./router/playlist")
+const csv = require("./router/csv")
 
 dotenv.config();
 // Middleware
@@ -50,7 +51,7 @@ app.use("/artists", artists)
 app.use("/follow", followFriends)
 app.use("/recommendation", recommendation)
 app.use("/playlist", playlist)
-
+app.use("/csv", csv)
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -4,24 +4,33 @@ const router = express.Router();
 
 const db = admin.firestore();
 
-// Create a playlist for the current user
 router.post('/create', async (req, res) => {
-  try {
-    const { userId, playlistName } = req.body;
-
-    const playlistsRef = db.collection('playlists');
-    const newPlaylistRef = await playlistsRef.add({
-      userId: userId,
-      playlistName: playlistName,
-      musics:[]
-      // You can add more fields as needed
-    });
-
-    res.json({ success: true, message: 'Playlist created successfully', data: newPlaylistRef.id });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
+    try {
+      const { userId, playlistName } = req.body;
+  
+      const playlistsRef = db.collection('playlists');
+      const newPlaylistRef = await playlistsRef.add({
+        userId: userId,
+        playlistName: playlistName,
+        musics: []
+        // You can add more fields as needed
+      });
+  
+      const playlistId = newPlaylistRef.id;
+  
+      // Add playlistId and userId to playlistBelongTo collection
+      const playlistBelongToRef = db.collection('playlistBelongTo');
+      await playlistBelongToRef.add({
+        userId: userId,
+        playlistId: playlistId
+      });
+  
+      res.json({ success: true, message: 'Playlist created successfully', data: playlistId });
+    } catch (error) {
+      res.status(500).json({ success: false, error: error.message });
+    }
+  });
+  
 
 // Get all playlists for a specific user
 router.get('/user/:userId', async (req, res) => {
