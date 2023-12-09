@@ -26,8 +26,8 @@ Riffy is an innovative music analyzer app designed to enhance and provide you wi
 ## Technology Stack
 
 - **Backend**:
-  - Node.js.
-  - Express.js: Web application framework for Node.js.
+  - Node.js
+  - Express.js
   - NoSQL using Firebase: Database solution for storing and retrieving data efficiently.
 
 - **Frontend**:
@@ -54,15 +54,14 @@ TODO.
 
 TODO.
 
-## Development
+## Contributing
 
-Information on setting up a development environment and contributing to the project.
+We currently do not have plans to include a way for people to contribute to our project.
 
 ## License
 
-TODO.
+This project is licensed under the MIT License - see the LICENSE.md file for details.
 
-## Contact
+## Contact Information
 
-For questions or feedback, contact Musa Misto at mistomusa@sabanciuniv,edu.
-
+For any inquiries, feel free to contact us at: softwareenginnering46@gmail.com
