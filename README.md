@@ -31,6 +31,7 @@ Riffy is an innovative music analyzer app designed to enhance and provide you wi
   - NoSQL using Firebase: Database solution for storing and retrieving data efficiently.
 
 - **Frontend**:
+  - HTML & CSS.  
   - JavaScript.
   - React.
 
@@ -44,7 +45,7 @@ TODO.
 
 ## Prerequisites
 
-TODO.
+There are no prerequisites for this project.
 
 ## Installation
 
@@ -61,6 +62,28 @@ We currently do not have plans to include a way for people to contribute to our 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/SerhanTelatar/CS308-Project/blob/9f7eaf012d7ef28485017198bcff2cca03a0164e/LICENSE.md) file for details.
+
+## Authors and Acknowledgment
+
+### Authors
+
+- **Musa Misto** - *Project Lead* - [GitHub Profile Link](https://github.com/MusaMistoSU)
+  
+- **Serhan Emre Telatar** - *Backend Developer* - [GitHub Profile Link](https://github.com/SerhanTelatar)
+- **Can Ceylan** - *Backend Developer* - [GitHub Profile Link](https://github.com/CanCeylan2001)
+- **Ilgın Yıldırım** - *Backend Developer* - [GitHub Profile Link]
+  
+- **Elif Özvarış** - *Frontend Developer* - [GitHub Profile Link](https://github.com/elifozv)
+- **Deniz Mecit** - *Frontend Developer* - [GitHub Profile Link](https://github.com/denizmecit)
+- **Derya Zeynep** - *Frontend Developer* - [GitHub Profile Link]
+  
+- **Muslim Malsagov** - *Mobile Developer* - [GitHub Profile Link](https://github.com/Calvin-ctrl)
+- **Selin Ağan** - *Mobile Developer* - [GitHub Profile Link](https://github.com/selinbsa)
+
+### Acknowledgments
+
+- Special thanks to our Advisor**[Ms. Zeynep](https://github.com/isikz)** for guidance and support.
+
 
 ## Contact Information
 
