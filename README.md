@@ -22,11 +22,21 @@ Riffy is an innovative music analyzer app designed to enhance and provide you wi
 
 - **And Many More to Come!**.
 
+
 ## Technology Stack
 
-- **Backend:** Node.js, Express.js, MySQL, [Cloud Service TBD]
-- **Web:** JavaScript, React
-- **Mobile:** Flutter, Dart
+- **Backend**:
+  - Node.js.
+  - Express.js: Web application framework for Node.js.
+  - NoSQL using Firebase: Database solution for storing and retrieving data efficiently.
+
+- **Frontend**:
+  - JavaScript.
+  - React.
+
+- **Mobile**:
+  - Dart.
+
 
 ## Getting Started
 
