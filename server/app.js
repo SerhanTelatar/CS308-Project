@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const session = require('express-session');
 
 const loginPage = require('./router/loginPage');
 const homePage = require('./router/homePage');
@@ -26,7 +27,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(cookieParser())
 
-
+app.use(session({
+  secret: 'yourSecretKey',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Adjust this as per your needs
+}));
 
 app.use('/login', loginPage);
 app.use('/home', homePage);
