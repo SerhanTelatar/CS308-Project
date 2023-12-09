@@ -20,7 +20,7 @@ Riffy is an innovative music analyzer app designed to enhance and provide you wi
 
 - **Versatile Song Addition**: Enables users to add songs manually, in batches, or through third-party integrations, offering flexibility in curating their music library.
 
-**With Many More Features to Come!**.
+**With Many More Features to Come!**
 
 
 ## Technology Stack
