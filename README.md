@@ -82,7 +82,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](https://gi
 
 ### Acknowledgments
 
-- Special thanks to our Advisor**[Ms. Zeynep](https://github.com/isikz)** for guidance and support.
+- Special thanks to our Advisor [**Ms. Zeynep**](https://github.com/isikz) for guidance and support.
 
 
 ## Contact Information
