@@ -39,7 +39,7 @@ Riffy is an innovative music analyzer app designed to enhance and provide you wi
   - Dart.
 
 
-## Getting Started
+## Getting Started & Installation
 
 To get the server component of the project up and running on your local machine, follow these steps:
 
@@ -72,23 +72,23 @@ Once the server is running, it will be accessible on your local machine at `http
 
 ## Prerequisites
 
-There are no prerequisites for this project.
+There are no prerequisites or dependencies for this project.
 
-## Installation
-
-TODO.
 
 ## Usage
 
-TODO.
+Usage of our program is straight forward and self-explanatory.
+
 
 ## Contributing
 
 We currently do not have plans to include a way for people to contribute to our project.
 
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/SerhanTelatar/CS308-Project/blob/9f7eaf012d7ef28485017198bcff2cca03a0164e/LICENSE.md) file for details.
+
 
 ## Authors and Acknowledgment
 
