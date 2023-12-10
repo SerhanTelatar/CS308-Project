@@ -41,7 +41,34 @@ Riffy is an innovative music analyzer app designed to enhance and provide you wi
 
 ## Getting Started
 
-TODO.
+To get the server component of the project up and running on your local machine, follow these steps:
+
+### Step 1: Clone the Repository
+
+First, clone the repository to your local machine. Use the following Git command:
+
+git clone https://github.com/SerhanTelatar/CS308-Project.git
+
+This command will create a copy of the project on your computer.
+
+### Step 2: Add the Admin Key
+
+After cloning the repository, you must add the `adminKey.json` file to the server directory. This file is essential for server configuration and authentication processes.
+
+### Step 3: Launch the Server
+
+Navigate to the server directory using the command line:
+
+"cd server"
+
+Then, start the development server by running:
+
+"npm run dev"
+
+### Step 4: Accessing the Server
+
+Once the server is running, it will be accessible on your local machine at `http://localhost`. You can now interact with the server.
+
 
 ## Prerequisites
 
