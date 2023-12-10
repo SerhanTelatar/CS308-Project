@@ -16,7 +16,9 @@ This directory contains all the source code and resources for the mobile applica
 
 - **.gitignore**: Configuration file for Git to ignore specific files and directories in version control.
 - **.metadata**: Automatically generated file that contains project-specific metadata for Flutter.
-- **analysis
+- **analysis_options.yaml**: Configuration file for Dart static analysis, defining rules and preferences for code quality.
+- **pubspec.lock**: Auto-generated file ensuring consistent dependency versions across different setups.
+- **pubspec.yaml**: The main configuration file for the Flutter project, specifying dependencies, assets, and other project settings.
 
 
 ## Setup
