@@ -42,7 +42,7 @@ This directory contains all the source code and resources for the mobile applica
 
 ## Flowchart
 
-[Riffy Mobile Application Flowchart](https://github.com/SerhanTelatar/CS308-Project/blob/03e0cd53b4b49a5cb0e5faaa7e2c1462291eb11c/mobile_app/Riffy%20Mobile%20App%20Flowchart.png)
+![Riffy Mobile Application Flowchart](https://github.com/SerhanTelatar/CS308-Project/blob/03e0cd53b4b49a5cb0e5faaa7e2c1462291eb11c/mobile_app/Riffy%20Mobile%20App%20Flowchart.png)
 
 
 ## Contact
