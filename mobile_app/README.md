@@ -1,16 +1,44 @@
-# mobile_app
+# Riffy's Mobile Application
 
-A new Flutter project.
+## Overview
 
-## Getting Started
+This directory contains all the source code and resources for the mobile application of Riffy. The mobile app is designed to provide users with a seamless music experience, allowing them to explore, rate, and manage their favorite music, interact with friends, and enjoy personalized recommendations on the go.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Directory Structure
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **android/**: Contains Android-specific project files and configurations, including the manifest and gradle scripts.
+- **assets/images/**: Stores image files such as icons, backgrounds, and other graphics used within the app.
+- **lib/**: The core of the Flutter application, housing the Dart source files, including widgets, models, services, etc.
+- **test/**: Contains test files for the application, including unit and widget tests.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Key Files
+
+- **.gitignore**: Configuration file for Git to ignore specific files and directories in version control.
+- **.metadata**: Automatically generated file that contains project-specific metadata for Flutter.
+- **analysis
+
+
+## Setup
+
+1. Ensure Flutter is installed on your machine.
+2. Clone the git repo.
+2. Navigate to the `mobile_app` directory.
+3. Run `flutter pub get` to install dependencies.
+
+
+## Running the App
+
+1. Connect your Android/iOS device or set up an emulator such as Visual Studio.
+2. Run `flutter run` within the `mobile_app` directory.
+
+
+## Testing
+
+- Navigate to the `test` directory.
+- Execute `flutter test` to run unit and widget tests.
+
+
+## Contact
+
+For queries, reach out to softwareenginnering46@gmail.com
