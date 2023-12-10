@@ -1,37 +1,35 @@
-# Music Recommendation System - Server
-
-This repository contains the server-side code for the Music Recommendation System "Riffy", specifically the resources related to user authentication, login, and registration.
+# Riffy's Server
 
 ## Overview
 
-The server handles user authentication, login, and registration processes for the Music Recommendation System. This README provides an overview of the resources and functionalities within the server folder.
+The 'server' directory contains the backend code for the Riffy application. This backend is responsible for handling data processing, API calls, routing, and other server-side functionalities.
 
-## Server Resources
+## Directory Structure
 
-The server folder includes the following key resources:
+- **api/**: Contains the application programming interface (API) logic, defining how the server responds to requests for data and services.
+- **config/**: Contains configuration files, including settings for databases, third-party services, or other backend configurations.
+- **node_modules/**: Stores the Node.js modules (dependencies) installed for the project. These modules are used by the application's server-side JavaScript.
+- **router/**: Holds the routing logic for the application, defining the paths and endpoints that the server responds to.
 
-- ** (TODO)**.
+## Key Files
 
-## Getting Started
+- **.env**: A configuration file for environment variables. Used to store sensitive information like database credentials, API keys, and other configuration details securely.
+- **.gitignore**: Specifies intentionally untracked files to ignore in Git, typically including logs, system files, and the `node_modules` directory.
+- **app.js**: The main application file for the server. This is where the server is set up and connected to routes, databases, and other services.
+- **package-lock.json** & **package.json**: These files keep track of the exact version of each package that is installed, ensuring consistency across installations.
+- **recommend.py**: Our Python script which is the recommendation system.
 
-To set up and run the server, follow the instructions below:
+## Setup and Usage
 
-1. **Prerequisites:** Ensure you have Node.js and any necessary dependencies installed (TODO).
+The Setup is explained thoroughly in the main README.md on the repo.
 
-2. **Configuration:** Update configuration files in the 'config' folder with your database credentials and secret keys (TODO).
+1. Ensure Node.js and Python are installed on your machine.
+2. Navigate to the `server` directory.
+3. Install dependencies with `npm install`.
+4. Set up the necessary environment variables in the `.env` file.
+5. Run the server using `node app.js` or a similar command.
 
-3. **Database Setup:** Initialize and configure your database (e.g., MySQL) as specified in the 'database' folder (TODO).
+## Contact
 
-4. **Installation:** Install project dependencies by running `npm install` (TODO).
+For any questions or suggestions related to the server code, please reach out to softwareenginnering46@gmail.com
 
-5. **Starting the Server:** Launch the server with `npm start` (TODO).
-
-6. **Testing:** Run tests using `npm test` to ensure functionality (TODO).
-
-## Usage
-
-- Use API routes for user registration, login, and authentication (TODO).
-
-- Utilize JWT tokens for user authentication. Include the token in the request headers for secured routes (TODO).
-
-- Customize and extend server functionality as needed for your Music Recommendation System (TODO).
