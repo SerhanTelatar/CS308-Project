@@ -7,7 +7,7 @@ This directory contains all the source code and resources for the mobile applica
 
 ## Directory Structure
 
-- **android/**: Contains Android-specific project files and configurations, including the manifest and gradle scripts.
+- **android/**: Contains Android-specific project files and configurations, including the manifest and Gradle scripts.
 - **assets/images/**: Stores image files such as icons, backgrounds, and other graphics used within the app.
 - **lib/**: The core of the Flutter application, housing the Dart source files, including widgets, models, services, etc.
 - **test/**: Contains test files for the application, including unit and widget tests.
