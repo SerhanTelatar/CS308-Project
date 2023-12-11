@@ -1,11 +1,17 @@
 const express = require('express');
 const admin = require('firebase-admin');
 const router = express.Router();
+const path = require('path');
 
 const db = admin.firestore();
 
-// Get all music from Firestore
-router.get('/', async (req, res) => {
+
+router.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../web/songs.html'));
+});
+
+// Get all music from Firestore at the "/music" path
+router.get('/music', async (req, res) => {
   try {
     const musicRef = db.collection('music');
     const snapshot = await musicRef.get();
@@ -139,7 +145,6 @@ router.delete('/delete-music/:musicId/:userId', async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-
 
 
 

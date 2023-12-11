@@ -26,7 +26,7 @@ const transporter = nodemailer.createTransport({
 
 // GET route to serve the registration form
 router.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, '../public', 'register.html'));
+  res.sendFile(path.join(__dirname, '../../web/register.html'));
 });
 
 // POST route to handle user registration

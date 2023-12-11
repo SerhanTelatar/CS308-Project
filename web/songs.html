@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music List</title>
+  <link rel="stylesheet" href="songs.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha384-pzjw8f+ua/C5KXr2P5q6OfQdle6uRoSkQ8XY5+ck/Z9gT5SsFk9wXlau2RKxLgh" crossorigin="anonymous">
+
+</head>
+<body>
+
+  <div class="container">
+    <h1>Music List</h1>
+    <ul id="musicList"></ul>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      // Fetch music list from the backend API
+      $.ajax({
+        url: '/music/music', // Update the endpoint if needed
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+          console.log('Received data from the backend:', data);
+  
+          // Display the music list
+          displayMusicList(data);
+        },
+        error: function (error) {
+          console.error('Error fetching music list:', error);
+        }
+      });
+  
+      // Function to display the music list
+      function displayMusicList(musicList) {
+        console.log('Displaying music list:', musicList);
+        
+        var $musicList = $('#musicList');
+  
+        if (musicList.length === 0) {
+          $musicList.append('<li>No songs available</li>');
+          return;
+        }
+  
+        musicList.forEach(function (music) {
+          var $li = $('<li>');
+            $li.html('<i class="fas fa-play"></i> <span style="margin-left: 10px;"><strong>' + music.data.musicName + '</strong> - ' + music.data.artist + '</span>');
+          $musicList.append($li);
+        });
+      }
+    });
+  </script>
+  
+</body>
+</html>

@@ -3,8 +3,9 @@ const router = express.Router();
 const admin = require('../config/userDB');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
+const path = require('path');
 
-router.get('/', async (req, res) => {
+/*router.get('/', async (req, res) => {
     const userData = req.session.user;
 
     if (req.session && req.session.user) {
@@ -13,6 +14,17 @@ router.get('/', async (req, res) => {
     } else {
         // User is not logged in
         res.json({ success: false, message: 'User is not logged in' });
+    }
+}); */
+
+router.get('/', async (req, res) => {
+    // Check if the user is logged in
+    if (req.session && req.session.user) {
+        const userData = req.session.user;
+        res.sendFile(path.join(__dirname, '../../web', 'home.html'));
+    } else {
+        // Serve the login.html page as the response
+        res.sendFile(path.join(__dirname, '../../web', 'index.html'));
     }
 });
 
@@ -62,6 +74,7 @@ router.get('/logout', (req, res) => {
         } else {
             res.clearCookie('connect.sid'); // Clear session cookie
             res.json({ success: true, message: 'Logout successful' });
+            
         }
     });
 });

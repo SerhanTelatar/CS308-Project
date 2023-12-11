@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const session = require('express-session');
+const path = require('path');
 
 const loginPage = require('./router/loginPage');
 const homePage = require('./router/homePage');
@@ -23,10 +24,11 @@ const playlist = require("./router/playlist")
 
 dotenv.config();
 // Middleware
+app.use(express.static(path.join(__dirname, 'web')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
-app.use(cookieParser())
+app.use(cookieParser());
 
 app.use(session({
   secret: 'yourSecretKey',
@@ -34,6 +36,7 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false } // Adjust this as per your needs
 }));
+
 
 app.use('/login', loginPage);
 app.use('/home', homePage);
@@ -50,6 +53,45 @@ app.use("/artists", artists)
 app.use("/follow", followFriends)
 app.use("/recommendation", recommendation)
 app.use("/playlist", playlist)
+
+app.get('/register.css', (req, res) => {
+  res.sendFile(path.join(__dirname, '../web/style', 'register.css'));
+});
+
+app.get('/register.js', (req, res) => {
+  res.sendFile(path.join(__dirname, '../web', 'register.js'));
+});
+
+app.get('/login.js', (req, res) => {
+  res.sendFile(path.join(__dirname, '../web', 'login.js'));
+});
+
+app.get('/logout.js', (req, res) => {
+  res.sendFile(path.join(__dirname, '../web', 'logout.js'));
+});
+
+app.get('/login.css', (req, res) => {
+  res.sendFile(path.join(__dirname, '../web/style', 'login.css'));
+});
+
+app.get('/songs.css', (req, res) => {
+  res.sendFile(path.join(__dirname, '../web/style', 'songs.css'));
+});
+
+app.get('/Logo.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '../web', 'Logo.png'));
+});
+
+app.get('/home.css', (req, res) => {
+  res.sendFile(path.join(__dirname, '../web/style', 'home.css'));
+});
+
+app.get('/songs.js', (req, res) => {
+  res.sendFile(path.join(__dirname, '../web', 'songs.js'));
+}); 
+app.get('/pic.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '../web', 'pic.png'));
+});
 
 
 // Error handling middleware

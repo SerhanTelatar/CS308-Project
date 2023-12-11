@@ -28,8 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const data = await response.json();
   
         if (data.success) {
-          alert(data.message);
-          window.location.href = "/dashboard";
+          window.location.href = "/home"; // Ensure this line is executed
         } else {
           alert(data.message);
         }

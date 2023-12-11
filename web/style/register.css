@@ -23,14 +23,14 @@ body {
     display: flex;
     flex-direction: column;
     padding: 0 15px 0 15px;
-    color: aliceblue;
+    color: #8486D1;
 }
 
-.top-header {
+/*.top-header {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
+} */
 
 span {
     color: pink;
@@ -41,12 +41,30 @@ span {
     justify-content: center;
 }
 
-header {
-    color: black;
-    font-size: 30px;
+.header-list {
+    list-style-type: none;
     display: flex;
     justify-content: center;
     padding: 10px 0 10px 0;
+    margin-bottom: 15px;
+    flex-direction: column;
+}
+
+.signup-item, .signup-item {
+    margin-right: 5px; /* Adjust the margin between logo and login text */
+}
+
+.logo {
+    height: 150px;
+    width: 265px;
+    margin-top: 2rem;
+}
+
+.login-text {
+    color: #8486D1;
+    font-size: 30px;
+    align-self: flex-end;
+    /*margin-top: 5px; /* Align login text to the flex-end */
 }
 
 .input-field {
@@ -73,7 +91,7 @@ header {
     top: 50%;
     transform: translateY(-50%);
     left: 17px;
-    color: #de8dd3;
+    color: #8486D1;
 }
 
 ::-webkit-input-placeholder {
@@ -90,7 +108,7 @@ header {
     background: rgba(255, 255, 255, 0.7);
     cursor: pointer;
     transition: .3s;
-    color: #de8dd3;
+    color: #8486D1;
 }
 
 .submit:hover {
