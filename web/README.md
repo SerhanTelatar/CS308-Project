@@ -25,7 +25,7 @@ To view or modify these pages:
 
 ## Flowchart
 
-[Riffy's Frontend Flowchart](https://github.com/SerhanTelatar/CS308-Project/blob/7ff7944b47bdba611efc698dd339feaeacfcfa0e/wikiAssets/Riffy's%20Frontend%20Flowchart.jpeg)
+![Riffy's Frontend Flowchart](https://github.com/SerhanTelatar/CS308-Project/blob/7ff7944b47bdba611efc698dd339feaeacfcfa0e/wikiAssets/Riffy's%20Frontend%20Flowchart.jpeg)
 
 ## Contact
 
