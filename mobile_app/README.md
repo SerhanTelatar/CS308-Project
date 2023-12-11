@@ -44,6 +44,7 @@ This directory contains all the source code and resources for the mobile applica
 
 ![Riffy Mobile Application Flowchart](https://github.com/SerhanTelatar/CS308-Project/blob/5412f9b41bfce7b2d0fbe8617d97bf84cb4f6e84/wikiAssets/Riffy%20Mobile%20App%20Flowchart.png)
 
+[Riffy's Mobile Application Flowchart Link](https://lucid.app/lucidchart/f589891f-68e8-403e-8588-7db02f51fc22/edit?viewport_loc=-1161%2C-691%2C4291%2C2042%2C0_0&invitationId=inv_9a626b61-66c7-4093-b466-052897b3a03f)
 
 ## Contact
 
