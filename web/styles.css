@@ -1,0 +1,88 @@
+.photo{
+    border-radius: 75%;
+    width: 130px;
+    height: 150px;
+    margin-left: 1rem;
+    margin-top: 2rem;
+}
+.profile{
+    display: block;
+    margin-top: -10rem;
+    margin-left: 10rem;
+}
+.profile p{
+    color: #8486D1;
+}
+.publicPlays{
+    display: inline-block;
+    text-align: left;
+    color: #8486D1;
+}
+.Show-all{
+    display: inline-block;
+    text-align: right;
+    color: #8486D1;
+}
+.publicPlays{
+    display: inline-block;
+    text-align: left;
+    margin-top: 1.8rem;
+    margin-left: 0.8rem;
+    color: #8486D1;
+}
+.playlistContainer{
+    width: 100%;
+    height: auto;
+    gap:40px;
+    display: flex;
+    flex-direction: row;
+    border: 100px;
+    flex-wrap: wrap;
+    margin: 1rem;
+}
+.pl{
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    height: 140px;
+    background-color: #8486D1;
+    padding: 1.5rem;
+    border-radius: 25px;
+}
+.Friends{
+    text-align: justify;
+    color: #8486D1;
+    display: flex;
+    flex-direction: row;
+    justify-content:left;
+}
+.Friends a{
+    display: flex;
+    flex-direction: row;
+    
+    margin-top: 2rem;
+    margin-left: 5rem;
+    color: #8486D1;
+}
+.friendsContainer{     
+    width: 100%;
+    height: auto;
+    gap:40px;
+    display: flex;
+    flex-direction: row;
+    border: 100px;
+    flex-wrap: wrap;
+    margin: 1rem;
+}
+.friend{
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    height: 140px;
+    background-color: #8486D1;
+    padding: 1.5rem;
+    border-radius: 25px;
+}
+.friend>p{
+    display: block;
+}
