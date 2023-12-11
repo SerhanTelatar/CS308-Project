@@ -23,6 +23,10 @@ To view or modify these pages:
 1. Open the HTML files in a web browser for a live view.
 2. Use a standard code editor such as Visual Studio for development. Refresh your browser to see changes after editing.
 
+## Flowchart
+
+[Riffy's Frontend Flowchart](https://github.com/SerhanTelatar/CS308-Project/blob/7ff7944b47bdba611efc698dd339feaeacfcfa0e/wikiAssets/Riffy's%20Frontend%20Flowchart.jpeg)
+
 ## Contact
 
 For questions or suggestions related to the web frontend, please reach out to softwareenginnering46@gmail.com
