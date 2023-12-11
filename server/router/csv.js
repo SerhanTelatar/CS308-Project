@@ -4,9 +4,7 @@ const router = express.Router();
 const multer = require('multer');
 const csvParser = require('csv-parser');
 const fs = require('fs'); 
-const csvWriter = require('csv-write-stream');
 const { Parser } = require('json2csv');
-const os = require('os');
 
 const db = admin.firestore();
 const upload = multer({ dest: 'temp/' });
