@@ -29,6 +29,10 @@ The Setup is explained thoroughly in the main README.md on the repo.
 4. Set up the necessary environment variables in the `.env` file.
 5. Run the server using `node app.js` or a similar command.
 
+## E-R Diagram
+
+![Riffy's Backend E-R Diagram](https://github.com/SerhanTelatar/CS308-Project/blob/3475d376289f4620be03b133ddd1d04bfea41d5c/wikiAssets/Riffy's%20Backend%20E-R%20Diagram.jpeg)
+
 ## Contact
 
 For any questions or suggestions related to the server code, please reach out to softwareenginnering46@gmail.com
