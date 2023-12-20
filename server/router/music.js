@@ -46,39 +46,56 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/add-music', async (req, res) => {
+router.post('/add-music/:userId', async (req, res) => {
   try {
-    const { musicName, musicType, artist, userId } = req.body;
+    const userId = req.params.userId;
+    const { musicName, musicType, artist, isAlbum, albumName, personalRating } = req.body;
 
-    // Assuming you have a 'music' collection in your Firestore
     const musicRef = db.collection('music');
-
     const lowercaseMusicType = musicType.toLowerCase();
 
-    // Add the music information to Firestore
-    const newMusicRef = await musicRef.add({
+    let parsedRating = null;
+    if (personalRating !== undefined && personalRating !== null) {
+      parsedRating = !isNaN(parseInt(personalRating)) ? parseInt(personalRating) : null;
+    }
+
+    const newMusicData = {
       musicName: musicName,
       musicType: lowercaseMusicType,
       artist: artist,
-      addedByUserId: userId // User ID who added this song
-      // You can add more fields as per your data structure
-    });
+      addedByUserId: userId,
+      isAlbum: isAlbum || false,
+      albumName: isAlbum ? albumName || null : null,
+      personalRating: parsedRating,
+    };
 
-    // Assuming newMusicRef.id contains the newly added music's ID
+    const newMusicRef = await musicRef.add(newMusicData);
+
     const listenToRef = db.collection('listenTo');
-    
-    // Add userId and musicId to the 'listenTo' collection
+
     await listenToRef.add({
       userId: userId,
-      musicId: newMusicRef.id
-      // You can add more fields related to listening activity if needed
+      musicId: newMusicRef.id,
+      // Add more fields related to listening activity if needed
     });
+
+    if (parsedRating !== null) {
+      const { rating } = req.body; // Assuming the rating is sent in the request body
+      const userRef = db.collection('users').doc(userId);
+
+      await userRef.update({
+        ratings: admin.firestore.FieldValue.arrayUnion({ musicId: newMusicRef.id, rating: parsedRating }),
+      });
+    }
 
     res.json({ success: true, message: 'Music added successfully', data: newMusicRef });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
+
+
+
 
 // this search on firestore database (our database)
 router.get('/search-music/:text', async (req, res) => {

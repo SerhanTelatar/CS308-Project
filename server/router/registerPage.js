@@ -53,7 +53,8 @@ router.post("/", validateInputs, async (req, res) => {
       isApproved: false,
       ratings: [],
       followers: [],
-      following: []
+      following: [],
+      saved:[]
     };
 
     const docRef = await userCollection.add(newUser);

@@ -21,6 +21,8 @@ const dotenv = require('dotenv');
 const recommendation = require("./router/recommendation")
 const playlist = require("./router/playlist")
 const csv = require("./router/csv")
+const notification = require("./router/notifications")
+const save = require("./router/save")
 
 dotenv.config();
 // Middleware
@@ -52,6 +54,9 @@ app.use("/follow", followFriends)
 app.use("/recommendation", recommendation)
 app.use("/playlist", playlist)
 app.use("/csv", csv)
+app.use("/notification", notification)
+app.use("/save", save)
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

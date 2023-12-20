@@ -2,7 +2,7 @@ const request = require('supertest');
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
-const router = require('../router/loginPage'); // Replace 'yourRouterFile' with the file path where your router code resides
+const router = require('../router/loginPage'); 
 
 jest.mock('../config/userDB', () => ({
   firestore: () => ({
