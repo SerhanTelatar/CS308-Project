@@ -1,68 +1,99 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:mobile_app/components/app_drawer.dart';
+import 'package:mobile_app/components/navigation_bar.dart';
+import 'search_page.dart';
+import 'playlist_page.dart';
+import 'home_page.dart';
+import 'package:provider/provider.dart';
+import 'package:mobile_app/providers/user_provider.dart';
 
 class ProfilePage extends StatefulWidget {
-  final String username;
-
-  ProfilePage({ required this.username, Key? key}) : super(key: key);
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late Future<Map<String, dynamic>> _userData;
-
-  @override
-  void initState() {
-    super.initState();
-    _userData = _fetchUserData();
-  }
-
-  Future<Map<String, dynamic>> _fetchUserData() async {
-  final baseUrl = "http://10.0.2.2:4200";
-  final userEndpoint = "/users/username/${widget.username}";
-
-  try {
-    final response = await http.get(Uri.parse('$baseUrl$userEndpoint'));
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> userData = json.decode(response.body);
-      return userData;
-    } else {
-      throw Exception('Failed to fetch user data');
-    }
-  } catch (e) {
-    throw Exception('Failed to connect to the server: $e');
-  }
-}
   @override
   Widget build(BuildContext context) {
+    // Retrieve userData inside the build method
+    final userData = Provider.of<UserProvider>(context).userData;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.home),
+            onPressed: () {
+              // Navigate to the home page
+              Navigator.pushReplacementNamed(context, '/home');
+            },
+          ),
+        ],
       ),
-      body: FutureBuilder<Map<String, dynamic>>(
-        future: _userData,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else {
-            final userData = snapshot.data!;
-            return Column(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              radius: 50,
+              backgroundColor: Colors.blue, // Placeholder color
+              child: Icon(Icons.person, size: 50, color: Colors.white),
+            ),
+            SizedBox(height: 16),
+            Text(
+              userData?['username']['username']?.toString() ?? 'Unknown',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 16),
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text('User Profile Information'),
-                Text('Name: ${userData['name']}'),
-                Text('Username: ${userData['username']}'),
-                // Add other user information as needed
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Handle edit button press
+                  },
+                  child: Text('Edit Profile'),
+                ),
               ],
-            );
-          }
-        },
+            ),
+            SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      'Followers',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      (userData != null && userData['followers'] != null)
+                          ? userData['followers'].length.toString()
+                          : '0',
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text(
+                      'Following',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      (userData != null && userData['following'] != null)
+                          ? userData['following'].length.toString()
+                          : '0',
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -50,7 +50,7 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: const CircleAvatar(
               // Profil resmi
-              backgroundImage: AssetImage('assets/profile_pic.png'),
+              backgroundImage: AssetImage('assets/images/logo.png'),
             ),
             title: const Text('Profile'),
             onTap: () {

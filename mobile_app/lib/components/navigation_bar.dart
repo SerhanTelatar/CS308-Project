@@ -1,12 +1,14 @@
-
 import 'package:flutter/material.dart';
 
 class BottomNavigationBarComponent extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onItemTapped;
 
-  const BottomNavigationBarComponent(this.selectedIndex,this.onItemTapped, {super.key}
-  );
+  const BottomNavigationBarComponent(
+    this.selectedIndex,
+    this.onItemTapped, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,11 @@ class BottomNavigationBarComponent extends StatelessWidget {
           icon: Icon(Icons.playlist_play),
           label: 'Playlists',
         ),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        
       ],
       currentIndex: selectedIndex,
       selectedItemColor: Colors.amber[800],
