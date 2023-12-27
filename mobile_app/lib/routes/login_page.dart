@@ -15,8 +15,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  
- Future<void> _login(String username, String password) async {
+
+  Future<void> _login(String username, String password) async {
     final baseUrl = "http://10.0.2.2:4200";
     final loginEndpoint = "/login";
 
@@ -32,21 +32,23 @@ class _LoginPageState extends State<LoginPage> {
       if (response.statusCode == 200) {
         // Successful login
         print('Login successful');
-
+        print('Response Body: ${response.body}');
         // Retrieve userData from the response
         final Map<String, dynamic> userData = json.decode(response.body);
 
+        final String userId = userData['id']; // Replace 'userId' with the actual key in your userData
+        
+
+        print(userId);
+        await Provider.of<UserProvider>(context, listen: false).fetchNotifications(userId);
+
         // Navigate to the profile page and pass the userData
-         Provider.of<UserProvider>(context, listen: false).setUserData(userData);
-         Navigator.pushReplacementNamed(context, '/profile');
-
-
-
-
-
+        Provider.of<UserProvider>(context, listen: false).setUserData(userData);
+        Navigator.pushReplacementNamed(context, '/profile');
       } else {
         // Handle login failure
-        print('Login failed with status code ${response.statusCode}: ${response.body}');
+        print(
+            'Login failed with status code ${response.statusCode}: ${response.body}');
         // ... handle other cases as needed
       }
     } catch (e) {
@@ -60,15 +62,6 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
   }
-
-
-
-
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
