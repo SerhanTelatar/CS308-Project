@@ -21,6 +21,7 @@ const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const recommendation = require("./router/recommendation")
 const playlist = require("./router/playlist")
+const csv = require("./router/csv")
 
 dotenv.config();
 // Middleware
@@ -53,6 +54,7 @@ app.use("/artists", artists)
 app.use("/follow", followFriends)
 app.use("/recommendation", recommendation)
 app.use("/playlist", playlist)
+app.use("/csv", csv)
 
 app.get('/register.css', (req, res) => {
   res.sendFile(path.join(__dirname, '../web/style', 'register.css'));
@@ -84,6 +86,18 @@ app.get('/Logo.png', (req, res) => {
 
 app.get('/home.css', (req, res) => {
   res.sendFile(path.join(__dirname, '../web/style', 'home.css'));
+});
+
+app.get('/profile.css', (req, res) => {
+  res.sendFile(path.join(__dirname, '../web', 'profile.css'));
+});
+
+app.get('/profile.jpeg', (req, res) => {
+  res.sendFile(path.join(__dirname, '../web/style', 'profile.jpeg'));
+});
+
+app.get('/img.jpg', (req, res) => {
+  res.sendFile(path.join(__dirname, '../web', 'img.jpg'));
 });
 
 app.get('/songs.js', (req, res) => {

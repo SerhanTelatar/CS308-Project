@@ -5,17 +5,7 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 const path = require('path');
 
-/*router.get('/', async (req, res) => {
-    const userData = req.session.user;
 
-    if (req.session && req.session.user) {
-        // User is logged in
-        res.json({ success: true, message: 'User is logged in', userData });
-    } else {
-        // User is not logged in
-        res.json({ success: false, message: 'User is not logged in' });
-    }
-}); */
 
 router.get('/', async (req, res) => {
     // Check if the user is logged in

@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const admin = require("firebase-admin");
+const path = require('path');
 
 // GET all users
 router.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../web', 'profile.html'));
   const userCollection = admin.firestore().collection('users');
 
   userCollection.get()
