@@ -1,58 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Music List</title>
-  <link rel="stylesheet" href="songs.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha384-pzjw8f+ua/C5KXr2P5q6OfQdle6uRoSkQ8XY5+ck/Z9gT5SsFk9wXlau2RKxLgh" crossorigin="anonymous">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music List</title>
+    <link rel="stylesheet" href="songs.css">
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+        integrity="sha384-pzjw8f+ua/C5KXr2P5q6OfQdle6uRoSkQ8XY5+ck/Z9gT5SsFk9wXlau2RKxLgh" crossorigin="anonymous">
+    <link
+        href='https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&family=Quicksand:wght@300;400;500;600;700&display=swap'
+        rel="stylesheet">
+
+    <script src="/logout.js"></script>
 </head>
+
 <body>
 
-  <div class="container">
-    <h1>Music List</h1>
-    <ul id="musicList"></ul>
-  </div>
+    <div class="sidebar">
+        <div class="logo">
+            <a href="">
+                <img src="Logo.png" alt="Logo">
+            </a>
+        </div>
 
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script>
-    $(document).ready(function () {
-      // Fetch music list from the backend API
-      $.ajax({
-        url: '/music/music', // Update the endpoint if needed
-        type: 'GET',
-        dataType: 'json',
-        success: function (data) {
-          console.log('Received data from the backend:', data);
-  
-          // Display the music list
-          displayMusicList(data);
-        },
-        error: function (error) {
-          console.error('Error fetching music list:', error);
-        }
-      });
-  
-      // Function to display the music list
-      function displayMusicList(musicList) {
-        console.log('Displaying music list:', musicList);
-        
-        var $musicList = $('#musicList');
-  
-        if (musicList.length === 0) {
-          $musicList.append('<li>No songs available</li>');
-          return;
-        }
-  
-        musicList.forEach(function (music) {
-          var $li = $('<li>');
-            $li.html('<i class="fas fa-play"></i> <span style="margin-left: 10px;"><strong>' + music.data.musicName + '</strong> - ' + music.data.artist + '</span>');
-          $musicList.append($li);
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="/home">
+                        <span class="fa fa-home"></span>
+                        <span>Home</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="/users">
+                        <span class="fa fa-user"></span>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/music">
+                        <span class="fa fas fa-book"></span>
+                        <span>Your Library</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span class="fa fa-search"></span>
+                        <span>Search Songs</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="policies">
+            <ul>
+                <li>
+                    <a href="">Settings</a>
+                </li>
+                <li>
+                    <a id="logoutButton" href="">Log out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Your Library</h1>
+        <ul id="musicList"></ul>
+
+        <div class="add-music-form">
+            <h2>Add New Music</h2>
+            <div class="song-box">
+                <label for="musicName">Music Name:</label>
+                <input type="text" id="musicName" name="musicName" required>
+            </div>
+            <div class="song-box">
+                <label for="artist">Artist:</label>
+                <input type="text" id="artist" name="artist" required>
+            </div>
+            <div class="song-box">
+                <label for="musicType">Music Type:</label>
+                <input type="text" id="musicType" name="musicType" required>
+            </div>
+            <!-- Add other form fields as needed -->
+            <button id="submitMusic">Submit</button>
+        </div>
+
+        <div class="upload-csv-form">
+            <h2>Upload Music CSV</h2>
+            <input type="file" id="csvFile" accept=".csv">
+            <button id="submitCsv">Upload</button>
+        </div>
+
+
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Get user ID from the URL query parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('userId');
+
+            document.querySelector('a[href="/home"]').href = "/home?userId=" + userId;
+            document.querySelector('a[href="/users"]').href = "/users/" + userId;
+            document.querySelector('a[href="/music"]').href = "/music?userId=" + userId;
+
+            // Fetch music list from the backend API using AJAX
+            $.ajax({
+                url: '/music/music', // Update the endpoint if needed
+                type: 'GET',
+                data: { userId: userId }, // Pass the userId as a query parameter
+                dataType: 'json',
+                success: function (data) {
+                    console.log('Received data from the backend:', data);
+
+                    // Display the music list
+                    displayMusicList(data);
+                },
+                error: function (error) {
+                    console.error('Error fetching music list:', error);
+                }
+            });
+
+            // Function to display the music list
+            // Function to display the music list
+            function displayMusicList(musicList) {
+                var $musicList = $('#musicList');
+
+                // Clear existing content of the ul
+                $musicList.empty();
+
+                // Filter musicList for songs added by the current user
+                var userSongs = musicList.filter(function (music) {
+                    return music.data.addedByUserId === userId;
+                });
+
+                if (userSongs.length === 0) {
+                    $musicList.append('<li>Your library is empty</li>');
+                    return;
+                }
+
+                userSongs.forEach(function (music) {
+                    var $li = $('<li>');
+                    $li.html('<i class="fas fa-play"></i> <span class="song-info"><strong>' +
+                        music.data.musicName + '</strong> - ' + music.data.artist +
+                        '</span> <i class="fas fa-times delete-icon" data-id="' + music.id + '"></i>' +
+                        '<div class="rating">' + getStarIcons(music.data.personalRating) + '</div>');
+
+                    $musicList.append($li);
+                });
+
+                // Add click event for delete icon
+                $('.delete-icon').on('click', function () {
+                    var musicId = $(this).data('id');
+                    // Call a function to handle deletion, for example:
+                    deleteMusicItem(musicId);
+                });
+            }
+
+
+            function deleteMusicItem(musicId) {
+                // Make an AJAX request to delete music from the backend
+                $.ajax({
+                    url: '/music/delete-music/' + musicId + '/' + userId, // Update the endpoint if needed
+                    type: 'DELETE',
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log('Music deleted successfully:', response);
+                        // Remove the deleted song from the UI
+                        $('[data-id="' + musicId + '"]').parent().remove();
+                    },
+                    error: function (error) {
+                        console.error('Error deleting music:', error);
+                        // Handle the error, show an error message, etc.
+                    }
+                });
+            }
+
+            // Function to generate star icons based on rating
+            function getStarIcons(rating) {
+                var stars = '';
+                for (var i = 0; i < 5; i++) {
+                    if (i < rating) {
+                        stars += '<i class="fas fa-star"></i>';
+                    } else {
+                        stars += '<i class="far fa-star"></i>';
+                    }
+                }
+                return stars;
+            }
+
+
+            $('#submitMusic').on('click', function () {
+                // Get values from the form
+                var musicName = $('#musicName').val();
+                var artist = $('#artist').val();
+                var musicType = $('#musicType').val();
+                // Get other form values as needed
+
+                // Perform AJAX request to add music
+                $.ajax({
+                    url: '/music/add-music/' + userId, // Update the endpoint if needed
+                    type: 'POST',
+                    data: {
+                        musicName: musicName,
+                        artist: artist,
+                        musicType: musicType,
+                        // Pass other form values as needed
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log('Music added successfully:', response);
+                        // You can update the music list or show a success message here
+                    },
+                    error: function (error) {
+                        console.error('Error adding music:', error);
+                        // Handle the error, show an error message, etc.
+                    }
+                });
+            });
+
+            $('#submitCsv').on('click', function () {
+                // Get the CSV file input element
+                var csvFileInput = document.getElementById('csvFile');
+
+                // Check if a file is selected
+                if (csvFileInput.files.length > 0) {
+                    var csvFile = csvFileInput.files[0];
+
+                    // Use FormData to create a form with the file data
+                    var formData = new FormData();
+                    formData.append('csvFile', csvFile);
+
+                    // Perform AJAX request to handle CSV file upload
+                    $.ajax({
+                        url: '/csv/upload/' + userId, // Update the endpoint if needed
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            console.log('CSV file uploaded successfully:', response);
+                            // You can update the music list or show a success message here
+                        },
+                        error: function (error) {
+                            console.error('Error uploading CSV file:', error);
+                            // Handle the error, show an error message, etc.
+                        }
+                    });
+                } else {
+                    console.error('No file selected.');
+                }
+            });
         });
-      }
-    });
-  </script>
-  
+    </script>
+
+
+    <script src="https://kit.fontawesome.com/ef9a692198.js" crossorigin="anonymous"></script>
 </body>
+
 </html>

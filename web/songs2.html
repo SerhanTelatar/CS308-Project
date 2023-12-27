@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music List</title>
+    <link rel="stylesheet" href="songs.css">
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+        integrity="sha384-pzjw8f+ua/C5KXr2P5q6OfQdle6uRoSkQ8XY5+ck/Z9gT5SsFk9wXlau2RKxLgh" crossorigin="anonymous">
+    <link
+        href='https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&family=Quicksand:wght@300;400;500;600;700&display=swap'
+        rel="stylesheet">
+
+    <script src="/logout.js"></script>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="logo">
+            <a href="">
+                <img src="Logo.png" alt="Logo">
+            </a>
+        </div>
+
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="/home">
+                        <span class="fa fa-home"></span>
+                        <span>Home</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="/users">
+                        <span class="fa fa-user"></span>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/music">
+                        <span class="fa fas fa-book"></span>
+                        <span>Your Library</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span class="fa fa-search"></span>
+                        <span>Search Songs</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="policies">
+            <ul>
+                <li>
+                    <a  href="">Settings</a>
+                </li>
+                <li>
+                    <a id="logoutButton" href="">Log out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Your Library</h1>
+        <ul id="musicList"></ul>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Fetch music list from the backend API using AJAX
+            $.ajax({
+                url: '/music/music', // Update the endpoint if needed
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    console.log('Received data from the backend:', data);
+
+                    // Display the music list
+                    displayMusicList(data);
+                },
+                error: function (error) {
+                    console.error('Error fetching music list:', error);
+                }
+            });
+
+            // Function to display the music list
+            function displayMusicList(musicList) {
+                var $musicList = $('#musicList');
+
+                if (musicList.length === 0) {
+                    $musicList.append('<li>No songs available</li>');
+                    return;
+                }
+
+                musicList.forEach(function (music) {
+                    var $li = $('<li>');
+                    $li.html('<i class="fas fa-play"></i> <span class="song-info"><strong>' +
+                        music.data.musicName + '</strong> - ' + music.data.artist +
+                        '</span> <i class="fas fa-times delete-icon" data-id="' + music.id + '"></i>' +
+                        '<div class="rating">' + getStarIcons(music.data.personalRating) + '</div>');
+
+                    $musicList.append($li);
+                });
+
+                // Add click event for delete icon
+                $('.delete-icon').on('click', function () {
+                    var musicId = $(this).data('id');
+                    // Call a function to handle deletion, for example:
+                    deleteMusicItem(musicId);
+                });
+            }
+
+            // Function to delete a music item from the frontend
+            function deleteMusicItem(musicId) {
+                // Remove the deleted song from the UI
+                $('[data-id="' + musicId + '"]').parent().remove();
+            }
+
+            // Function to generate star icons based on rating
+            function getStarIcons(rating) {
+                var stars = '';
+                for (var i = 0; i < 5; i++) {
+                    if (i < rating) {
+                        stars += '<i class="fas fa-star"></i>';
+                    } else {
+                        stars += '<i class="far fa-star"></i>';
+                    }
+                }
+                return stars;
+            }
+        });
+    </script>
+
+    <script src="https://kit.fontawesome.com/ef9a692198.js" crossorigin="anonymous"></script>
+</body>
+
+</html>

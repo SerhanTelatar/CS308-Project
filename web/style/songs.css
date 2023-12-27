@@ -1,6 +1,6 @@
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;
+  background-color: rgba(232, 155, 212, 0.1);
   margin: 0;
 }
 
@@ -11,7 +11,7 @@ body {
 }
 
 h1 {
-  color: #333;
+  color: #8486D1;
 }
 
 #musicList {
@@ -23,6 +23,7 @@ h1 {
 }
 
 #musicList li {
+  position: relative;
   width: 100%;
   background-color: rgba(255, 255, 255, 0.7);
   border: 1px solid #e2d8e0;
@@ -44,8 +45,72 @@ h1 {
   color: #fff;
 }
 
+.stars {
+  position: absolute;
+  right: 10px; /* Adjust as needed */
+}
 
+.delete-icon {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #8486D1;
+  transition: color 0.3s;
+}
 
+#musicList li:hover .delete-icon {
+  color: #fff;
+}
 
+.song-info {
+  margin-right: 15px; /* Adjust the value as needed */
+}
 
-  
+.add-music-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: 1px solid #e2d8e0;
+  border-radius: 30px;
+  padding: 15px;
+  margin: 10px;
+  color: #8486D1;
+  text-align: center;
+}
+
+.add-music-form h2 {
+  color: #8486D1;
+}
+
+.song-box {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.song-box label {
+  margin-right: 10px;
+}
+
+.song-box input {
+  padding: 8px;
+  border: 1px solid #8486D1;
+  border-radius: 5px;
+}
+
+#submitMusic {
+  background-color: #8486D1;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#submitMusic:hover {
+  background-color: #6b6cbb;
+}

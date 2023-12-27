@@ -1,11 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&family=Quicksand:wght@300;400;500;600;700&display=swap');
-
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Arial', sans-serif;
 }
 
 body {
@@ -151,13 +148,13 @@ body {
 .main-content {
     margin-left: 250px; /* Same as the sidebar width to offset the content */
     padding: 20px; /* Spacing around the content */
-    background: rgba(232, 155, 212, 0.1); /* Light color for the content area, distinct from the sidebar */
+    background: #f0f0f7; /* Light color for the content area, distinct from the sidebar */
     min-height: 100vh; /* Full height of the viewport */
     transition: margin-left 0.3s ease; /* Smooth transition for margin changes */
 }
 
 .main-content h1 {
-    color: #8486D1; /* Dark color for the title text */
+    color: #333; /* Dark color for the title text */
     margin-bottom: 20px; /* Spacing below the title */
     font-size: 2em; /* Larger size for the title */
     text-align: center; /* Center align the title */
@@ -177,4 +174,64 @@ body {
 /* New class for when the sidebar is closed */
 .fullwidth {
     margin-left: 0; /* Full width when the sidebar is closed */
+}
+
+.profile{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 45px;
+    margin-left: 250px;
+}
+
+.pPhoto{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.userInfo{
+   margin:20px 0;
+}
+
+.userInfo p{
+    margin: 10px 0;
+}
+
+.icon{
+    background-color: #ffffff;
+    width: 60px;
+    height: 80px;
+    position: fixed;
+    top: 15px;
+    right: 5px;
+    cursor: pointer;
+}
+
+.icon .badge{
+    font-family: 'Arial', sans-serif;
+    width: 25px;
+    background-color: #ffffff;
+    color: #7d83d4f1;
+    padding: 0rem 0.2rem;
+    border-radius: 0.2rem;
+    position: absolute;
+    right: 17px;
+    box-shadow: 0px 4px 3px rgba(255,42,42,00.2rem);
+    font-size: 0.9rem;
+}
+
+.searchBox{
+    width: 50px;
+    top:10px;
+    right: 160px;
+    position: fixed;
+    border-radius: 50%;
+}
+
+.searchBox input{
+    font-weight: bolder;
+    height: 30px;
 }
