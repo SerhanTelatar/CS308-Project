@@ -1,7 +1,7 @@
 const request = require('supertest');
 const express = require('express');
 const admin = require('firebase-admin');
-const router = require('./yourRouterFile'); 
+const router = require('../router/music'); 
 
 // Mocking Firebase admin
 jest.mock('firebase-admin', () => ({
