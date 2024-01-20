@@ -2,6 +2,9 @@ const express = require('express');
 const admin = require('firebase-admin');
 const router = express.Router();
 const PDFDocument = require('pdfkit');
+const { IgApiClient } = require('instagram-private-api');
+const { get } = require('request-promise');
+const Jimp = require('jimp');
 
 const db = admin.firestore();
 
@@ -276,5 +279,109 @@ router.get('/pdf/:userId', async (req, res) => {
       ratedArtists: artistList
     };
   }
+  //Share results on instagram
+  router.post('/share/:userId', async (req, res) => {
+    try {
+      const userId = req.params.userId;
+  
+      // Retrieve user data using the existing function
+      const userDataResponse = await analyzeUserData(userId);
+  
+      // Share the story on Instagram
+      await shareStoryOnInstagram(userDataResponse, userId);
+  
+      res.status(200).json({ message: 'Story shared successfully on Instagram' });
+  
+    } catch (error) {
+      console.error('Error sharing story on Instagram:', error);
+      res.status(500).json({ error: 'Failed to share story on Instagram' });
+    }
+  });
+
+  
+
+// Function to share a story on Instagram using user data
+async function shareStoryOnInstagram(userDataResponse, userId) {
+  try {
+    // Initialize Instagram Private API client
+    let ig = new IgApiClient(); // Change const to let
+
+    const userCollection = admin.firestore().collection('users');
+    const userDoc = await userCollection.doc(userId).get();
+
+    const userData = userDoc.data();
+
+    // Provide Instagram credentials (replace with your own credentials)
+    const username = 'cs308riffy';
+    const password = 'naber1234';
+
+    // Login to Instagram
+    await ig.state.generateDevice(username);
+    await ig.account.login(username, password);
+
+    // Initialize caption with basic user data
+    let caption = `
+      Username: ${userData.username}\n
+      Average Rating: ${userDataResponse.averageRating}\n
+      Total Ratings: ${userDataResponse.totalRatings}\n
+      Total Followers: ${userDataResponse.totalFollowers}\n
+      Total Following: ${userDataResponse.totalFollowing}\n
+      Total Saved Music: ${userDataResponse.totalSavedMusic}\n
+    `;
+
+    // Add genre percentages to the caption
+    caption += '\nGenre Percentages:';
+    for (const genre in userDataResponse.genrePercentage) {
+      caption += `\n  ${genre}: ${userDataResponse.genrePercentage[genre]}%`;
+    }
+
+    // Add saved music genre percentages to the caption
+    caption += '\nSaved Music Genre Percentage:';
+    for (const genre in userDataResponse.savedMusicGenrePercentage) {
+      caption += `\n  ${genre}: ${userDataResponse.savedMusicGenrePercentage[genre]}%`;
+    }
+
+    // Add rated artists to the caption
+    caption += '\nRated Artists:';
+    userDataResponse.ratedArtists.forEach((artist) => {
+      caption += `\n  ${artist}`;
+    });
+
+    const imageBuffer = await get({
+      url: "http://localhost:4200/image",
+      encoding: null,
+    });
+
+    const imageEdited = await Jimp.read(imageBuffer);
+    const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
+
+    const centerX = 100;
+    let currentY = 100;
+    const lineHeight = Jimp.measureTextHeight(font, "Test");
+
+    // Split the caption into lines and add each line to the image
+    caption.split('\n').forEach((line) => {
+      imageEdited.print(font, centerX, currentY, line);
+      imageEdited.print(font, centerX + 1, currentY + 1, line);
+      currentY += lineHeight;
+    });
+
+    const editedBuffer = await imageEdited.getBufferAsync(Jimp.MIME_JPEG);
+
+    // Publish the story with the edited image and caption
+    const story = await ig.publish.story({
+      file: editedBuffer,
+      caption: "caption",
+    });
+
+    console.log('Story shared successfully');
+  } catch (error) {
+    console.error('Error sharing story on Instagram:', error);
+    throw error;
+  }
+}
+
+
+
 
 module.exports = router;
