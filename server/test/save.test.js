@@ -3,7 +3,7 @@ const app = require('../router/save'); // Replace this with the path to your Exp
 
 describe('GET /users/:userId', () => {
   it('should get saved music details for a user', async () => {
-    const userId = 'yourUserIdHere'; // Replace with an existing user ID in your database
+    const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with an existing user ID in your database
     const response = await request(app).get(`/users/${userId}`);
     expect(response.status).toBe(200);
     // Add more assertions to validate the response body, structure, etc.
@@ -21,7 +21,7 @@ describe('GET /users/:userId', () => {
 
 describe('POST /users/:userId/save/:musicId', () => {
   it('should save music for a user', async () => {
-    const userId = 'yourUserIdHere'; // Replace with an existing user ID in your database
+    const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with an existing user ID in your database
     const musicId = 'yourMusicIdHere'; // Replace with an existing music ID in your database
     const response = await request(app).post(`/users/${userId}/save/${musicId}`);
     expect(response.status).toBe(200);
@@ -33,7 +33,7 @@ describe('POST /users/:userId/save/:musicId', () => {
 
 describe('DELETE /users/:userId/unsave/:musicId', () => {
   it('should remove saved music for a user', async () => {
-    const userId = 'yourUserIdHere'; // Replace with an existing user ID in your database
+    const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with an existing user ID in your database
     const musicId = 'yourMusicIdHere'; // Replace with an existing music ID in your database
     const response = await request(app).delete(`/users/${userId}/unsave/${musicId}`);
     expect(response.status).toBe(200);

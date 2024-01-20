@@ -1,16 +1,16 @@
 const request = require('supertest');
-const app = require('../yourExpressApp'); // Replace this with the path to your Express app setup
+const app = require('../router/notifications'); 
 
 describe('GET /notificationsOfUser/:userId', () => {
   it('should fetch notifications for a user', async () => {
-    const userId = 'yourUserIdHere'; // Replace with an existing user ID in your database
+    const userId = '9fKpPcrHOGPHARWQJwzo'; 
     const response = await request(app).get(`/notificationsOfUser/${userId}`);
     expect(response.status).toBe(200);
     // Add more assertions to validate the response body, structure, etc.
   });
 
   it('should return an empty array if user has no notifications', async () => {
-    const userId = 'userWithNoNotifications'; // Replace with a user ID that has no notifications in your database
+    const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with a user ID that has no notifications in your database
     const response = await request(app).get(`/notificationsOfUser/${userId}`);
     expect(response.status).toBe(200);
     expect(response.body).toEqual([]); // Assuming an empty array is expected for a user with no notifications

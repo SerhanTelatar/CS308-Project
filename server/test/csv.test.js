@@ -35,7 +35,7 @@ app.use('/', router);
 
 describe('Export and Upload Routes', () => {
   test('GET /export/:userId should export user data to CSV', async () => {
-    const response = await request(app).get('/export/testUserId'); // Replace 'testUserId' with a valid user ID
+    const response = await request(app).get('/export/9fKpPcrHOGPHARWQJwzo'); // Replace 'testUserId' with a valid user ID
 
     expect(response.status).toBe(200);
     expect(response.headers['content-type']).toBe('text/csv');
@@ -49,7 +49,7 @@ describe('Export and Upload Routes', () => {
     };
 
     const response = await request(app)
-      .post('/upload/testUserId') // Replace 'testUserId' with a valid user ID
+      .post('/upload/9fKpPcrHOGPHARWQJwzo') // Replace 'testUserId' with a valid user ID
       .attach('csvFile', mockFile.path);
 
     expect(response.status).toBe(200);
@@ -58,7 +58,7 @@ describe('Export and Upload Routes', () => {
   });
 
   test('POST /upload/:userId should handle missing file', async () => {
-    const response = await request(app).post('/upload/testUserId'); // Replace 'testUserId' with a valid user ID
+    const response = await request(app).post('/upload/9fKpPcrHOGPHARWQJwzo'); // Replace 'testUserId' with a valid user ID
 
     expect(response.status).toBe(400);
     expect(response.text).toBe('No file uploaded.');

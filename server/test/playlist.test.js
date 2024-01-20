@@ -12,7 +12,7 @@ jest.mock('firebase-admin', () => ({
           exists: true,
           data: () => ({
             // Sample playlist data for mocking
-            userId: 'testUserId',
+            userId: '9fKpPcrHOGPHARWQJwzo',
             playlistName: 'Test Playlist',
             musics: [],
           }),
@@ -39,7 +39,7 @@ app.use('/', router);
 describe('Playlist Routes', () => {
   test('POST /create should create a new playlist', async () => {
     const newPlaylistData = {
-      userId: 'testUserId',
+      userId: '9fKpPcrHOGPHARWQJwzo',
       playlistName: 'New Test Playlist',
     };
 
