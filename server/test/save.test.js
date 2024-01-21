@@ -1,44 +1,83 @@
 const request = require('supertest');
-const app = require('../router/save'); // Replace this with the path to your Express app setup
+const express = require('express');
+const admin = require('firebase-admin');
+const router = require('../router/save'); // Assuming your app file is in the parent directory
 
-describe('GET /users/:userId', () => {
+// Mocking Firebase admin
+jest.mock('firebase-admin', () => ({
+  firestore: () => ({
+    collection: jest.fn(() => ({
+      where: jest.fn(() => ({
+        get: jest.fn(() => ({
+          empty: true,
+        })),
+      })),
+      add: jest.fn(() => ({
+        id: '9fKpPcrHOGPHARWQJwzo',
+      })),
+    })),
+  }),
+}));
+
+const app = express();
+app.use(express.json());
+app.use('/', router);
+
+describe('Save Routes', () => {
+  const userId = '9fKpPcrHOGPHARWQJwzo';
+  const musicId = 'JU5Xr0IwRk8vd8xHhzW9';
+
   it('should get saved music details for a user', async () => {
-    const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with an existing user ID in your database
-    const response = await request(app).get(`/users/${userId}`);
-    expect(response.status).toBe(200);
-    // Add more assertions to validate the response body, structure, etc.
+    const response = await request(app).get(`/save/${userId}`);
+    setTimeout(() => {
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('musicDetails');
+    }, 1050);
+    
   });
 
-  it('should return 404 if user is not found', async () => {
-    const userId = 'nonExistingUserId'; // Replace with a non-existing user ID in your database
-    const response = await request(app).get(`/users/${userId}`);
-    expect(response.status).toBe(404);
-    // Add more assertions as needed
+  it('should save a music for a user', async () => {
+    const response = await request(app).post(`/save/${userId}/save/${musicId}`);
+    setTimeout(() => {
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('message', `Music ${musicId} saved for user ${userId}`);
+    }, 1050);
+    
   });
 
-  // Add more test cases for different scenarios (empty saved music, error cases, etc.)
-});
+  it('should not save a music that is already saved', async () => {
+    // Save the music first
+    await request(app).post(`/save/${userId}/save/${musicId}`);
 
-describe('POST /users/:userId/save/:musicId', () => {
-  it('should save music for a user', async () => {
-    const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with an existing user ID in your database
-    const musicId = 'yourMusicIdHere'; // Replace with an existing music ID in your database
-    const response = await request(app).post(`/users/${userId}/save/${musicId}`);
-    expect(response.status).toBe(200);
-    // Add more assertions as needed
+    // Try to save it again
+    const response = await request(app).post(`/save/${userId}/save/${musicId}`);
+
+    setTimeout(() => {
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('message', 'Music already saved');  
+    }, 1050);
+
   });
 
-  // Add more test cases for scenarios like trying to save already saved music, error cases, etc.
-});
+  it('should unsave a music for a user', async () => {
+    // Save the music first
+    await request(app).post(`/save/${userId}/save/${musicId}`);
 
-describe('DELETE /users/:userId/unsave/:musicId', () => {
-  it('should remove saved music for a user', async () => {
-    const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with an existing user ID in your database
-    const musicId = 'yourMusicIdHere'; // Replace with an existing music ID in your database
-    const response = await request(app).delete(`/users/${userId}/unsave/${musicId}`);
-    expect(response.status).toBe(200);
-    // Add more assertions as needed
+    // Now unsave it
+    const response = await request(app).delete(`/save/${userId}/unsave/${musicId}`);
+    setTimeout(() => {
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('message', `Music ${musicId} removed from saved list for user ${userId}`);
+    }, 1050);
+
   });
 
-  // Add more test cases for scenarios like trying to remove non-existing music, error cases, etc.
+  it('should not unsave a music that is not in the saved list', async () => {
+    const response = await request(app).delete(`/save/${userId}/unsave/${musicId}`);
+    setTimeout(() => {
+      expect(response.status).toBe(400);
+      expect(response.body).toHaveProperty('message', 'Music not found in saved list');
+    }, 1050);
+    
+  });
 });

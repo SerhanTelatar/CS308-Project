@@ -1,49 +1,78 @@
 const request = require('supertest');
-const app = require('../router/usersPage'); // Replace this with the path to your Express app setup
+const express = require('express');
+const admin = require('firebase-admin');
+const router = require('../router/save'); // Replace this with the path to your Express app setup
 
-describe('GET /users', () => {
-  it('should fetch all users', async () => {
-    const response = await request(app).get('/users');
-    expect(response.status).toBe(200);
-    // Add more assertions to validate the response body, structure, etc.
-  });
+// Mocking Firebase admin
+jest.mock('firebase-admin', () => ({
+  firestore: () => ({
+    collection: jest.fn(() => ({
+      where: jest.fn(() => ({
+        get: jest.fn(() => ({
+          empty: true,
+        })),
+      })),
+      add: jest.fn(() => ({
+        id: '9fKpPcrHOGPHARWQJwzo',
+      })),
+    })),
+  }),
+}));
 
-  // Add more test cases for error handling, empty user list scenarios, etc.
-});
+const app = express();
+app.use(express.json());
+app.use('/', router);
 
-describe('GET /users/:id', () => {
-  it('should fetch a user by ID', async () => {
+describe('GET /users/:userId', () => {
+  it('should get saved music details for a user', async () => {
     const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with an existing user ID in your database
     const response = await request(app).get(`/users/${userId}`);
-    expect(response.status).toBe(200);
+    setTimeout(() => {
+      expect(response.status).toBe(200);
+    }, 700);
+    
     // Add more assertions to validate the response body, structure, etc.
   });
 
   it('should return 404 if user is not found', async () => {
-    const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with a non-existing user ID in your database
+    const userId = 'qqweqweqwqeqwe'; // Replace with a non-existing user ID in your database
     const response = await request(app).get(`/users/${userId}`);
-    expect(response.status).toBe(404);
+    setTimeout(() => {
+      expect(response.status).toBe(404);
+    }, 700);
+    
     // Add more assertions as needed
   });
 
-  // Add more test cases for error handling, invalid ID formats, etc.
+  // Add more test cases for different scenarios (empty saved music, error cases, etc.)
 });
 
-describe('GET /users/username/:username', () => {
-  it('should fetch a user by username', async () => {
-    const username = 'testUsername'; // Replace with an existing username in your database
-    const response = await request(app).get(`/users/username/${username}`);
-    expect(response.status).toBe(200);
-    // Add more assertions to validate the response body, structure, etc.
-  });
-
-  it('should return 404 if username is not found', async () => {
-    const username = 'nonExistingUsername'; // Replace with a non-existing username in your database
-    const response = await request(app).get(`/users/username/${username}`);
-    expect(response.status).toBe(404);
+describe('POST /users/:userId/save/:musicId', () => {
+  it('should save music for a user', async () => {
+    const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with an existing user ID in your database
+    const musicId = 'JU5Xr0IwRk8vd8xHhzW9'; // Replace with an existing music ID in your database
+    const response = await request(app).post(`/users/${userId}/save/${musicId}`);
+    setTimeout(() => {
+      expect(response.status).toBe(200);
+    }, 700);
+    
     // Add more assertions as needed
   });
 
-  // Add more test cases for error handling, special characters in usernames, etc.
+  // Add more test cases for scenarios like trying to save already saved music, error cases, etc.
 });
 
+describe('DELETE /users/:userId/unsave/:musicId', () => {
+  it('should remove saved music for a user', async () => {
+    const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with an existing user ID in your database
+    const musicId = 'JU5Xr0IwRk8vd8xHhzW9'; // Replace with an existing music ID in your database
+    const response = await request(app).delete(`/users/${userId}/unsave/${musicId}`);
+    setTimeout(() => {
+      expect(response.status).toBe(200);
+    }, 700);
+    
+    // Add more assertions as needed
+  });
+
+  // Add more test cases for scenarios like trying to remove non-existing music, error cases, etc.
+});

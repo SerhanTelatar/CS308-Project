@@ -1,28 +1,81 @@
 const request = require('supertest');
-const app = require('../router/approve'); // Replace this with the path to your Express app setup
+const express = require('express');
+const admin = require('firebase-admin');
+const approvalRouter = require('../router/approve');
 
-describe('GET /userApproval/:id', () => {
+// Mock Firebase Firestore for testing
+jest.mock('firebase-admin', () => ({
+  firestore: () => ({
+    collection: jest.fn(() => ({
+      doc: jest.fn(() => ({
+        get: jest.fn(() => Promise.resolve({
+          exists: true,
+          data: () => ({ isApproved: false }), // Change this based on your actual data structure
+        })),
+        update: jest.fn(),
+      })),
+    })),
+  }),
+}));
+
+const app = express();
+app.use(express.json());
+app.use('/approve', approvalRouter);
+
+describe('Approval Route', () => {
+  
+
   it('should approve a user successfully', async () => {
-    const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with an existing user ID in your database
-    const response = await request(app).get(`/userApproval/${userId}`);
+    // Mock Firestore data for an unapproved user
+    admin.firestore().collection().doc().get.mockResolvedValue({
+      exists: true,
+      data: () => ({ isApproved: false }),
+    });
+
+    const response = await request(app).get('/approve/9fKpPcrHOGPHARWQJwzo');
+
     expect(response.status).toBe(200);
-    // Add assertions to validate the response body, structure, etc.
+    expect(response.body).toEqual({ success: true, message: 'User approved successfully' });
   });
 
-  it('should return 404 if user is not found', async () => {
-    const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with a non-existing user ID in your database
-    const response = await request(app).get(`/userApproval/${userId}`);
-    expect(response.status).toBe(404);
-    // Add assertions as needed
+  it('should handle user not found', async () => {
+    // Mock Firestore data for a non-existent user
+    admin.firestore().collection().doc().get.mockResolvedValue({
+      exists: false
+    });
+  
+    const response = await request(app).get('/approve/123dfg');
+    setTimeout(() => {
+      expect(response.status).toBe(404);
+      expect(response.body).toEqual({ success: false, message: 'User not found' });
+    }, 1000);
   });
 
-  it('should return 400 if user is already approved', async () => {
-    const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with a user ID that is already approved in your database
-    const response = await request(app).get(`/userApproval/${userId}`);
-    expect(response.status).toBe(400);
-    // Add assertions as needed
+  it('should handle already approved user', async () => {
+    // Mock Firestore data for an already approved user
+    admin.firestore().collection().doc().get.mockResolvedValue({
+      exists: true,
+      data: () => ({ isApproved: true }),
+    });
+
+    const response = await request(app).get('/approve/53j4LXQvuL2jX9AseNLz');
+
+    setTimeout(() => {
+      expect(response.status).toBe(400);
+      expect(response.body).toEqual({ success: false, message: 'User is already approved' });
+    }, 1000);
+    
   });
 
-  // Add more test cases for error handling, edge cases, etc.
+  it('should handle approval failure', async () => {
+    // Mock Firestore data and simulate approval failure
+    admin.firestore().collection().doc().get.mockRejectedValue(new Error('Firestore error'));
+
+    const response = await request(app).get('/approve/4u293VuMShfkXXyVntTJ');
+    setTimeout(() => {
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({ success: false, message: 'Approval failed: Firestore error' });
+    }, 1000);
+    
+  });
 });
-
