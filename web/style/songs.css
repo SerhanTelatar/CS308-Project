@@ -76,13 +76,13 @@ h1 {
   border: 1px solid #e2d8e0;
   border-radius: 30px;
   padding: 15px;
-  margin: 10px;
+  margin: 0;
   color: #8486D1;
   text-align: center;
 }
 
 .add-music-form h2 {
-  color: #8486D1;
+  color: black;
 }
 
 .song-box {
@@ -112,5 +112,71 @@ h1 {
 }
 
 #submitMusic:hover {
+  background-color: #6b6cbb;
+}
+
+
+.dropdown {
+  display: inline-block;
+  position: relative;
+  z-index: 1; /* Ensure the dropdown is above other elements */
+}
+
+.dropbtn {
+  background-color: #8486D1;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: 1px solid #e2d8e0;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 2; /* Ensure the dropdown content is above other elements */
+  padding: 15px;
+  text-align: center;
+}
+
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content button,
+.dropdown-content input {
+  background-color: #8486D1;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.dropdown-content button:hover,
+.dropdown-content input:hover {
+  background-color: #6b6cbb;
+}
+
+.dropdown-content #exportData {
+  background-color: #8486D1;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dropdown-content #exportData:hover {
   background-color: #6b6cbb;
 }

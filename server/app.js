@@ -22,6 +22,7 @@ const dotenv = require('dotenv');
 const recommendation = require("./router/recommendation")
 const playlist = require("./router/playlist")
 const csv = require("./router/csv")
+const analysis = require("./router/analysis")
 
 dotenv.config();
 // Middleware
@@ -55,6 +56,7 @@ app.use("/follow", followFriends)
 app.use("/recommendation", recommendation)
 app.use("/playlist", playlist)
 app.use("/csv", csv)
+app.use("/analysis", analysis)
 
 app.get('/register.css', (req, res) => {
   res.sendFile(path.join(__dirname, '../web/style', 'register.css'));
@@ -86,6 +88,10 @@ app.get('/Logo.png', (req, res) => {
 
 app.get('/home.css', (req, res) => {
   res.sendFile(path.join(__dirname, '../web/style', 'home.css'));
+});
+
+app.get('/analysis.css', (req, res) => {
+  res.sendFile(path.join(__dirname, '../web/style', 'analysis.css'));
 });
 
 app.get('/profile.css', (req, res) => {

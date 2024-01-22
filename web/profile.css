@@ -146,11 +146,11 @@ body {
 }
 
 .main-content {
-    margin-left: 250px; /* Same as the sidebar width to offset the content */
-    padding: 20px; /* Spacing around the content */
-    background: #f0f0f7; /* Light color for the content area, distinct from the sidebar */
-    min-height: 100vh; /* Full height of the viewport */
-    transition: margin-left 0.3s ease; /* Smooth transition for margin changes */
+    margin-left: 0; /* Set to 0 to avoid extra space for the sidebar */
+    padding: 20px;
+    background: #f0f0f7;
+    min-height: 100vh;
+    transition: margin-left 0.3s ease;
 }
 
 .main-content h1 {
@@ -176,29 +176,35 @@ body {
     margin-left: 0; /* Full width when the sidebar is closed */
 }
 
-.profile{
+/* Add these styles to your existing profile.css */
+
+/* Additional styles for the profile photo */
+/* Additional styles for the profile photo */
+.profile {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     padding: 45px;
-    margin-left: 250px;
 }
 
-.pPhoto{
+.pPhoto {
     width: 150px;
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
+    margin-bottom: 20px; /* Adjust as needed */
 }
 
-.userInfo{
-   margin:20px 0;
+
+.userInfo {
+    margin: 20px 0;
 }
 
-.userInfo p{
+.userInfo p {
     margin: 10px 0;
 }
+
 
 .icon{
     background-color: #ffffff;
@@ -223,15 +229,91 @@ body {
     font-size: 0.9rem;
 }
 
-.searchBox{
-    width: 50px;
-    top:10px;
-    right: 160px;
+/* Add these styles to your existing CSS */
+.searchBox {
+    width: 200px;
     position: fixed;
-    border-radius: 50%;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
-.searchBox input{
+#searchInput {
     font-weight: bolder;
     height: 30px;
+}
+
+#searchButton {
+    margin-top: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+#searchResults {
+    list-style: none;
+    padding: 0;
+    margin-top: 5px;
+}
+
+#searchResults li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    border: 1px solid #ddd;
+    margin-top: 5px;
+}
+
+
+
+#followers,
+#following {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+    margin-right: 10px;
+}
+
+/* Additional styles for notification window and follow request list */
+#notificationWindow {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    width: 250px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: none;
+}
+
+.notification-type {
+    margin-bottom: 10px;
+}
+
+#followRequestsList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#followRequestsList li {
+    margin-bottom: 5px;
+}
+
+.accept-button,
+.reject-button {
+    cursor: pointer;
+    background-color: #4caf50;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    margin-right: 5px;
+}
+
+.reject-button {
+    background-color: #f44336;
+}
+.hidden {
+    display: none;
 }

@@ -1,40 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://kit.fontawesome.com/ef9a692198.js" crossorigin="anonymous"></script>
-    <link rel = "stylesheet" href = "profile.css" />
+    <link rel="stylesheet" href="https://kit.fontawesome.com/ef9a692198.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="profile.css" />
     <script src="/logout.js"></script>
-    <title>Profile</title>
+    <script src="https://kit.fontawesome.com/ef9a692198.js" crossorigin="anonymous"></script>
+
+    <script>
+
+        function toggleNotificationWindow() {
+            const notificationWindow = document.getElementById('notificationWindow');
+            console.log('Toggling notification window');
+            notificationWindow.classList.toggle('hidden');
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            var sidebar = document.getElementById('sidebar');
+            var toggleButton = document.getElementById('sidebarToggle');
+            var mainContent = document.querySelector('.main-content');
+
+            function displayUserProfile(userData) {
+                const usernameElement = document.getElementById('username');
+                const followersCountElement = document.getElementById('followers');
+                const nameElement = document.getElementById('name');
+                const followingCountElement = document.getElementById('following');
+                const profilePhotoElement = document.getElementById('profilePhoto');
+
+                usernameElement.textContent = userData.username || '';
+                followersCountElement.textContent = userData.followers ? userData.followers.length : 0;
+                nameElement.textContent = userData.name || '';
+                followingCountElement.textContent = userData.following ? userData.following.length : 0;
+
+                if (profilePhotoElement) {
+                    profilePhotoElement.src = 'img.jpg'; // replace with the actual path
+                } else {
+                    console.error("Profile photo element not found.");
+                }
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('userId');
+
+            document.getElementById('notificationIcon').addEventListener('click', function () {
+                toggleNotificationWindow();
+                displayFollowRequests(); // Call displayFollowRequests when the bell icon is clicked
+            });
+
+            fetch(`/users/${userId}`)
+                .then(response => response.json())
+                .then(userData => {
+                    displayUserProfile(userData);
+                })
+                .catch(error => console.error('Error fetching user data:', error));
+
+            if (userId) {
+                updateLinks();
+            }
+
+            toggleButton.addEventListener('click', function () {
+                sidebar.classList.toggle('closed');
+                mainContent.classList.toggle('fullwidth');
+            });
+
+            const searchButton = document.getElementById('searchButton');
+
+            searchButton.addEventListener('click', function () {
+                const query = document.getElementById('searchInput').value.trim();
+                if (query) {
+                    fetch(`/follow/search/${query}`)
+                        .then(response => response.json())
+                        .then(userList => {
+                            displaySearchResults(userList);
+                        })
+                        .catch(error => console.error('Error searching users:', error));
+                }
+            });
+
+            function displaySearchResults(userList) {
+                const searchResults = document.getElementById('searchResults');
+                searchResults.innerHTML = '';
+
+                userList.forEach(user => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        <span>${user.data.username}</span>
+                        <button class="addButton" data-userid="${user.id}">Follow</button>
+                    `;
+                    searchResults.appendChild(listItem);
+                });
+
+                const addButtons = document.querySelectorAll('.addButton');
+                addButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const friendId = this.getAttribute('data-userid');
+
+                        fetch(`/follow/follow/${friendId}/${userId}`, {
+                            method: 'POST',
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log(data.message);
+                            })
+                            .catch(error => console.error('Error following user:', error));
+                    });
+                });
+            }
+
+            const followersElement = document.getElementById('followers');
+            const followingElement = document.getElementById('following');
+
+            followersElement.addEventListener('click', function () {
+                fetchFollowList(`/follow/followers/${userId}`, 'Followers', 'followersList');
+            });
+
+            followingElement.addEventListener('click', function () {
+                fetchFollowList(`/follow/following/${userId}`, 'Following', 'followingList');
+            });
+
+            function fetchFollowList(endpoint, title, containerId) {
+                fetch(endpoint)
+                    .then(response => response.json())
+                    .then(data => {
+                        displayFollowList(data, title, containerId);
+                    })
+                    .catch(error => console.error(`Error fetching ${title} data:`, error));
+            }
+
+            function displayFollowList(userList, title, containerId) {
+                const container = document.getElementById(containerId);
+                container.innerHTML = '';
+
+                userList.forEach(async user => {
+                    const userId = user && (user.id || user);
+                    if (userId) {
+                        const listItem = document.createElement('li');
+                        const username = await fetchUsername(userId);
+                        listItem.textContent = username;
+                        container.appendChild(listItem);
+                    } else {
+                        console.error(`Invalid data structure in ${title} data:`, user);
+                    }
+                });
+            }
+
+            async function fetchUsername(userId) {
+                try {
+                    const response = await fetch(`/users/${userId}`);
+                    const userData = await response.json();
+                    return userData.username || 'Unknown';
+                } catch (error) {
+                    console.error(`Error fetching username for user ID ${userId}:`, error);
+                    return 'Unknown';
+                }
+            }
+
+            async function displayFollowRequests() {
+                const followRequestsList = document.getElementById('followRequestsList');
+
+                try {
+                    const response = await fetch(`/users/${userId}`);
+                    const userData = await response.json();
+
+                    // Extract notifications from user data
+                    const notifications = userData.notifications || [];
+
+                    // Filter follow requests
+                    const followRequests = notifications.filter(notification => notification.type === 'follow_request' && notification.status === 'pending');
+
+                    followRequestsList.innerHTML = '';
+
+                    followRequests.forEach(request => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `User ${request.from} wants to follow you.`;
+
+                        const acceptButton = document.createElement('button');
+                        acceptButton.className = 'notification-button';
+                        acceptButton.textContent = 'Accept';
+                        acceptButton.addEventListener('click', () => handleFollowRequest(request.notificationID, true));
+
+                        const rejectButton = document.createElement('button');
+                        rejectButton.textContent = 'Reject';
+                        rejectButton.addEventListener('click', () => handleFollowRequest(request.notificationID, false));
+
+                        listItem.appendChild(acceptButton);
+                        listItem.appendChild(rejectButton);
+
+                        followRequestsList.appendChild(listItem);
+                    });
+                } catch (error) {
+                    console.error('Error fetching follow requests:', error);
+                }
+            }
+
+
+            async function handleFollowRequest(notificationId, accept) {
+                try {
+                    const response = await fetch(`/follow/accept/${notificationId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ accept }),
+                    });
+
+                    const result = await response.json();
+                    console.log(result.message);
+
+                    displayFollowRequests();
+                } catch (error) {
+                    console.error('Error handling follow request:', error);
+                }
+            }
+
+            function updateLinks() {
+                document.querySelector('a[href="/home"]').href = "/home?userId=" + userId;
+                document.querySelector('a[href="/users"]').href = "/users?userId=" + userId;
+                document.querySelector('a[href="/music"]').href = "/music?userId=" + userId;
+                document.querySelector('a[href="/analysis"]').href = "/analysis?userId=" + userId;
+            }
+        });
+    </script>
+
+
 </head>
+
 <body>
-    <div class = "profile">
-        <img class="pPhoto" src = "img.jpg" height="100" alt = "Riffy logo" draggable="false">
-        <div class = "userInfo">
-            <h2>Username</h2>
-            <p>@1111<p>
-            <p>10 Friends<p>
-        </div>      
-    </div>  
     <div id="sidebar" class="sidebar">
         <button id="sidebarToggle" class="toggle-button">
-            <span></span> <!-- This span is the middle line of the hamburger icon -->
+            <span></span>
         </button>
         <div class="logo">
             <a href="home.html">
-                <img src="Logo.png" alt="Logo"> <!-- Logo image path is relative -->
+                <img src="Logo.png" alt="Logo">
             </a>
         </div>
-        <div class = "icon">
-            <div class = "badge">9</div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" ><path d="M12 22a2.98 2.98 0 0 0 2.818-2H9.182A2.98 2.98 0 0 0 12 22zm7-7.414V10c0-3.217-2.185-5.927-5.145-6.742C13.562 2.52 12.846 2 12 2s-1.562.52-1.855 1.258C7.185 4.074 5 6.783 5 10v4.586l-1.707 1.707A.996.996 0 0 0 3 17v1a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-1a.996.996 0 0 0-.293-.707L19 14.586z"></path></svg>
+        <div class="icon">
+            <div class="badge">9</div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path
+                    d="M12 22a2.98 2.98 0 0 0 2.818-2H9.182A2.98 2.98 0 0 0 12 22zm7-7.414V10c0-3.217-2.185-5.927-5.145-6.742C13.562 2.52 12.846 2 12 2s-1.562.52-1.855 1.258C7.185 4.074 5 6.783 5 10v4.586l-1.707 1.707A.996.996 0 0 0 3 17v1a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-1a.996.996 0 0 0-.293-.707L19 14.586z">
+                </path>
+            </svg>
         </div>
-        <div class = "searchBox">
-            <input type = "text" placeholder="Search...">
-            <a href = '#'>
-                <i class = "fas fa-search"></i>
-            </a>
+        <div class="searchBox">
+            <input type="text" placeholder="Search..." id="searchInput">
+            <button id="searchButton">Search</button>
+            <ul id="searchResults"></ul>
         </div>
         <div class="navigation">
             <ul>
@@ -49,21 +262,21 @@
         <div class="navigation">
             <ul>
                 <li>
-                    <a href="">
+                    <a href="/users">
                         <span class="fa fa-user"></span>
                         <span>Profile</span>
                     </a>
                 </li>
                 <li>
                     <a href="/music">
-                        <span class="fa fas fa-book"></span>
+                        <span class="fas fa-book"></span>
                         <span>Your Library</span>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="/analysis">
                         <span class="fa fa-search"></span>
-                        <span>Search Songs</span>
+                        <span>Analysis</span>
                     </a>
                 </li>
             </ul>
@@ -76,5 +289,34 @@
                 </li>
             </ul>
         </div>
-    </div>  
-</body>   
+    </div>
+
+
+    <div class="main-content">
+        <h1>You</h1>
+
+        <div class="profile">
+            <div id="notificationIcon" onclick="toggleNotificationWindow()">
+                <i class="fas fa-bell"></i>
+            </div>
+
+            <div id="notificationWindow" class="hidden">
+                <div id="followRequests" class="notification-type">
+                    <h2>Follow Requests</h2>
+                    <ul id="followRequestsList"></ul>
+                </div>
+            </div>
+            <img id="profilePhoto" alt="Profile Photo" class="pPhoto">
+            <h1 id="username">You</h1>
+            <p>Name: <span id="name"></span></p>
+            <p>
+                Followers: <span id="followers">0</span>
+            <ul id="followersList"></ul>
+            Following: <span id="following">0</span>
+            <ul id="followingList"></ul>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

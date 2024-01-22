@@ -6,24 +6,8 @@ const path = require('path');
 // GET all users
 router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../../web', 'profile.html'));
-  const userCollection = admin.firestore().collection('users');
-
-  userCollection.get()
-    .then((snapshot) => {
-      const users = [];
-      snapshot.forEach((doc) => {
-        users.push({
-          id: doc.id,
-          ...doc.data(),
-        });
-      });
-
-      res.json(users);
-    })
-    .catch((error) => {
-      res.status(500).json({ error: 'Failed to fetch users' });
-    });
 });
+
 
 // GET user by ID
 router.get('/:id', (req, res) => {
@@ -45,6 +29,8 @@ router.get('/:id', (req, res) => {
       res.status(500).json({ error: 'Failed to fetch user' });
     });
 });
+
+/*
 
 // GET user by username
 router.get('/username/:username', (req, res) => {
@@ -98,7 +84,7 @@ router.post('/', (req, res) => {
     .catch((error) => {
       res.status(500).json({ success: false, message: 'Registration failed: ' + error.message });
     });
-});
+}); 
 
 // Update user by ID
 router.put('/:id', (req, res) => {
@@ -126,6 +112,6 @@ router.delete('/:id', (req, res) => {
     .catch((error) => {
       res.status(500).json({ success: false, message: 'Failed to delete user' });
     });
-});
+});  */
 
 module.exports = router;

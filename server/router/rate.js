@@ -48,53 +48,33 @@ router.post('/', async (req, res) => {
 
 
   router.put('/', async (req, res) => {
-    const { userId, musicId, rating, artistId } = req.body;
-  
     try {
-      // Assuming your collection in Firestore is named "users"
-      const userRef = db.collection('users').doc(userId);
-  
-      // Remove the existing rating for the specified musicId if it exists
-      await userRef.update({
-        ratings: admin.firestore.FieldValue.arrayRemove(
-          { musicId: musicId }
-        ),
-      });
-  
-      // Add the updated rating for the specified musicId
-      await userRef.update({
-        ratings: admin.firestore.FieldValue.arrayUnion(
-          { musicId, rating, artistId }
-        ),
-      });
-  
-      res.status(200).json({ message: 'Rating updated successfully' });
-    } catch (error) {
-      console.error('Error updating rating:', error);
-      res.status(500).json({ error: 'Failed to update rating' });
-    }
-  });
+        const { userId, musicId, rating, artistId } = req.body;
 
-  router.delete('/', async (req, res) => {
-    const { userId, musicId } = req.body;
-  
-    try {
-      // Assuming your collection in Firestore is named "users"
-      const userRef = db.collection('users').doc(userId);
-  
-      // Remove the specified rating entry for the musicId
-      await userRef.update({
-        ratings: admin.firestore.FieldValue.arrayRemove(
-          { musicId: musicId }
-        ),
-      });
-  
-      res.status(200).json({ message: 'Rating deleted successfully' });
+        if (!userId || !musicId || rating === undefined || !artistId) {
+            return res.status(400).json({ error: 'Invalid request parameters' });
+        }
+
+        const userRef = db.collection('users').doc(userId);
+
+        // Remove the existing rating for the specified musicId if it exists
+        await userRef.update({
+            ratings: admin.firestore.FieldValue.arrayRemove({ musicId: musicId })
+        });
+
+        // Add the updated rating for the specified musicId
+        await userRef.update({
+            ratings: admin.firestore.FieldValue.arrayUnion({ musicId, rating, artistId })
+        });
+
+        res.status(200).json({ message: 'Rating updated successfully' });
     } catch (error) {
-      console.error('Error deleting rating:', error);
-      res.status(500).json({ error: 'Failed to delete rating' });
+        console.error('Error updating rating:', error);
+        res.status(500).json({ error: 'Failed to update rating' });
     }
-  });
+});
+
+
   
 
   module.exports = router;

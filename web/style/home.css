@@ -178,3 +178,39 @@ body {
 .fullwidth {
     margin-left: 0; /* Full width when the sidebar is closed */
 }
+
+#recommendedSongsList {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#recommendedSongsList li {
+    position: relative;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid #e2d8e0;
+    border-radius: 30px;
+    padding: 15px;
+    margin: 10px;
+    color: #8486D1;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+#recommendedSongsList li i {
+    margin-right: 10px;
+}
+
+#recommendedSongsList li:hover {
+    background-color: #8486D1;
+    color: #fff;
+}
+
+.stars {
+    position: absolute;
+    right: 10px;
+}

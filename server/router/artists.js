@@ -4,6 +4,7 @@ const router = express.Router();
 
 const db = admin.firestore();
 
+
 // Get all artists from Firestore
 router.get('/', async (req, res) => {
   try {

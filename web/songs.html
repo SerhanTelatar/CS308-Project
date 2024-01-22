@@ -14,6 +14,7 @@
         rel="stylesheet">
 
     <script src="/logout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 </head>
 
 <body>
@@ -50,9 +51,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="/analysis">
                         <span class="fa fa-search"></span>
-                        <span>Search Songs</span>
+                        <span>Analysis</span>
                     </a>
                 </li>
             </ul>
@@ -72,51 +73,71 @@
 
     <div class="container">
         <h1>Your Library</h1>
+        <br>
+        <br>
+
+        <div class="dropdown">
+            <button class="dropbtn">Add New Music</button>
+            <div class="dropdown-content add-music-form">
+                <h2>Add New Music</h2>
+                <div class="song-box">
+                    <label for="musicName">Music Name:</label>
+                    <input type="text" id="musicName" name="musicName" required>
+                </div>
+                <div class="song-box">
+                    <label for="artist">Artist:</label>
+                    <input type="text" id="artist" name="artist" required>
+                </div>
+                <div class="song-box">
+                    <label for="musicType">Music Type:</label>
+                    <input type="text" id="musicType" name="musicType" required>
+                </div>
+                <button id="submitMusic">Submit</button>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="dropbtn">Upload Music CSV</button>
+            <div class="dropdown-content upload-csv-form">
+                <h2>Upload Music CSV</h2>
+                <input type="file" id="csvFile" accept=".csv">
+                <button id="submitCsv">Upload</button>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="dropbtn">Export Data</button>
+            <div class="dropdown-content export-data-form">
+                <h2>Export Data</h2>
+                <p>Export your music library</p>
+                <button id="exportData">Export</button>
+            </div>
+        </div>
+
         <ul id="musicList"></ul>
-
-        <div class="add-music-form">
-            <h2>Add New Music</h2>
-            <div class="song-box">
-                <label for="musicName">Music Name:</label>
-                <input type="text" id="musicName" name="musicName" required>
-            </div>
-            <div class="song-box">
-                <label for="artist">Artist:</label>
-                <input type="text" id="artist" name="artist" required>
-            </div>
-            <div class="song-box">
-                <label for="musicType">Music Type:</label>
-                <input type="text" id="musicType" name="musicType" required>
-            </div>
-            <!-- Add other form fields as needed -->
-            <button id="submitMusic">Submit</button>
-        </div>
-
-        <div class="upload-csv-form">
-            <h2>Upload Music CSV</h2>
-            <input type="file" id="csvFile" accept=".csv">
-            <button id="submitCsv">Upload</button>
-        </div>
 
 
     </div>
 
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
+
         $(document).ready(function () {
             // Get user ID from the URL query parameter
             const urlParams = new URLSearchParams(window.location.search);
             const userId = urlParams.get('userId');
 
             document.querySelector('a[href="/home"]').href = "/home?userId=" + userId;
-            document.querySelector('a[href="/users"]').href = "/users/" + userId;
+            document.querySelector('a[href="/users"]').href = "/user?userId=" + userId;
             document.querySelector('a[href="/music"]').href = "/music?userId=" + userId;
+            document.querySelector('a[href="/analysis"]').href = "/analysis?userId=" + userId;
+
+            window.userId = userId;
 
             // Fetch music list from the backend API using AJAX
             $.ajax({
-                url: '/music/music', // Update the endpoint if needed
+                url: '/music/music',
                 type: 'GET',
                 data: { userId: userId }, // Pass the userId as a query parameter
                 dataType: 'json',
@@ -131,7 +152,19 @@
                 }
             });
 
-            // Function to display the music list
+
+            function getStarIcons(musicId, rating, artistId) {
+                var stars = '';
+                for (var i = 1; i <= 5; i++) {
+                    if (i <= rating) {
+                        stars += '<i class="fas fa-star"></i>';
+                    } else {
+                        stars += '<i class="far fa-star"></i>';
+                    }
+                }
+                return stars;
+            }
+
             // Function to display the music list
             function displayMusicList(musicList) {
                 var $musicList = $('#musicList');
@@ -150,14 +183,17 @@
                 }
 
                 userSongs.forEach(function (music) {
+                    console.log('Rating for musicId ' + music.id + ': ' + music.data.personalRating);
                     var $li = $('<li>');
                     $li.html('<i class="fas fa-play"></i> <span class="song-info"><strong>' +
                         music.data.musicName + '</strong> - ' + music.data.artist +
                         '</span> <i class="fas fa-times delete-icon" data-id="' + music.id + '"></i>' +
-                        '<div class="rating">' + getStarIcons(music.data.personalRating) + '</div>');
+                        '<div class="rating">' + getStarIcons(music.id, music.data.personalRating, music.data.artistId) + '</div>');
+
 
                     $musicList.append($li);
                 });
+
 
                 // Add click event for delete icon
                 $('.delete-icon').on('click', function () {
@@ -166,6 +202,7 @@
                     deleteMusicItem(musicId);
                 });
             }
+
 
 
             function deleteMusicItem(musicId) {
@@ -184,19 +221,6 @@
                         // Handle the error, show an error message, etc.
                     }
                 });
-            }
-
-            // Function to generate star icons based on rating
-            function getStarIcons(rating) {
-                var stars = '';
-                for (var i = 0; i < 5; i++) {
-                    if (i < rating) {
-                        stars += '<i class="fas fa-star"></i>';
-                    } else {
-                        stars += '<i class="far fa-star"></i>';
-                    }
-                }
-                return stars;
             }
 
 
@@ -261,7 +285,76 @@
                     console.error('No file selected.');
                 }
             });
+
+            $('#exportData').on('click', function () {
+                // Get the music data from the existing list
+                var musicData = [];
+                $('#musicList li').each(function () {
+                    var musicInfo = $(this).find('.song-info').text();
+                    musicData.push(musicInfo);
+                });
+
+                // Convert the music data to plain text
+                var textContent = musicData.join('\n');
+
+                // Create a Blob from the text content
+                var blob = new Blob([textContent], { type: 'text/plain' });
+
+                // Create a link element to trigger the download
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = 'music_library.txt';
+
+                // Append the link to the document and trigger the click event
+                document.body.appendChild(link);
+                link.click();
+
+                // Remove the link from the document
+                document.body.removeChild(link);
+            });
+
+            $(document).on('click', '.rating', function () {
+                var musicId = $(this).data('music-id');
+                var rating = $(this).data('rating');
+                var artistId = $(this).data('artist-id');
+
+                $.ajax({
+                    url: '/rate', 
+                    type: 'PUT',
+                    data: {
+                        userId: window.userId, 
+                        musicId: musicId,
+                        rating: rating,
+                        artistId: artistId
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log('Rating updated successfully:', response);
+                        // Update the displayed rating stars visually
+                        updateRatingStars(musicId, rating);
+                    },
+                    error: function (error) {
+                        console.error('Error updating rating:', error);
+                        // Handle the error, show an error message, etc.
+                    }
+                });
+            });
+
+
+            // Function to update the displayed rating stars
+            function updateRatingStars(musicId, rating) {
+                var $ratingStars = $('.rating[data-id="' + musicId + '"]');
+                $ratingStars.empty();
+                for (var i = 1; i <= 5; i++) {
+                    if (i <= rating) {
+                        $ratingStars.append('<i class="fas fa-star"></i>');
+                    } else {
+                        $ratingStars.append('<i class="far fa-star"></i>');
+                    }
+                }
+            }
         });
+
     </script>
 
 

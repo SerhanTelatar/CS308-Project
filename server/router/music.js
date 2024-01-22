@@ -7,7 +7,7 @@ const db = admin.firestore();
 
 const isAuthenticated = (req, res, next) => {
   // Check the user's authentication status
-  if (req.session && req.session.user ) {
+  if (req.session && req.session.user) {
     // User is authenticated, proceed to the next middleware or route handler
     next();
   } else {
