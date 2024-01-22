@@ -29,7 +29,7 @@ describe('Music Routes', () => {
     const response = await request(app).get('/music');
     setTimeout(() => {
       expect(response.status).toBe(200);
-    }, 550);
+    }, 1000);
   });
 
   test('GET /:id should get specific music by ID from Firestore', async () => {
@@ -37,7 +37,7 @@ describe('Music Routes', () => {
 
     setTimeout(() => {
       expect(response.status).toBe(200);
-    }, 1200);
+    }, 1000);
   });
 
   test('POST /add-music should add new music to Firestore', async () => {
@@ -54,7 +54,7 @@ describe('Music Routes', () => {
 
       setTimeout(() => {
         expect(response.status).toBe(200);
-      }, 1200);
+      }, 1000);
     // Add expectations based on the expected behavior of adding new music
   });
 
@@ -63,7 +63,7 @@ describe('Music Routes', () => {
 
     setTimeout(() => {
       expect(response.status).toBe(200);
-    }, 1200);
+    }, 1000);
     // Add expectations based on the expected behavior of searching music
   });
 
@@ -72,7 +72,7 @@ describe('Music Routes', () => {
 
     setTimeout(() => {
       expect(response.status).toBe(200);
-    }, 1200);
+    }, 1000);
     // Add expectations based on the expected behavior of deleting music
   });
 
@@ -82,7 +82,7 @@ describe('Music Routes', () => {
     setTimeout(() => {
       expect(response.status).toBe(200);
       // Add expectations based on the expected behavior of retrieving user-specific music
-    }, 1200);
+    }, 1000);
   });
 
   test('POST /add-music/:userId should add new music with optional personal rating to Firestore', async () => {
@@ -101,7 +101,7 @@ describe('Music Routes', () => {
     setTimeout(() => {
       expect(response.status).toBe(200);
       // Add expectations based on the expected behavior of adding new music with a personal rating
-    }, 1200);
+    }, 1000);
   });
 
   test('GET /search-music/:text should handle no matching tracks found', async () => {
@@ -110,7 +110,7 @@ describe('Music Routes', () => {
     setTimeout(() => {
       expect(response.status).toBe(200);
       expect(response.body).toEqual([]);
-    }, 1200);
+    }, 1000);
     // Add expectations based on the expected behavior of handling no matching tracks found
   });
 
@@ -121,7 +121,7 @@ describe('Music Routes', () => {
     setTimeout(() => {
       expect(response.status).toBe(403);
       // Add expectations based on the expected behavior of handling permission denied
-    }, 1200);
+    }, 1000);
   });
 
   test('DELETE /delete-music/:musicId/:userId should handle music not found', async () => {
@@ -131,6 +131,6 @@ describe('Music Routes', () => {
     setTimeout(() => {
       expect(response.status).toBe(404);
       // Add expectations based on the expected behavior of handling music not found
-    }, 1200);
+    }, 1000);
   });
 });

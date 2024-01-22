@@ -25,13 +25,13 @@ app.use('/', router);
 
 describe('GET /users/:userId', () => {
   it('should get saved music details for a user', async () => {
-    const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with an existing user ID in your database
+    const userId = '9fKpPcrHOGPHARWQJwzo'; 
     const response = await request(app).get(`/users/${userId}`);
     setTimeout(() => {
       expect(response.status).toBe(200);
     }, 700);
     
-    // Add more assertions to validate the response body, structure, etc.
+
   });
 
   it('should return 404 if user is not found', async () => {
@@ -41,17 +41,17 @@ describe('GET /users/:userId', () => {
       expect(response.status).toBe(404);
     }, 700);
     
-    // Add more assertions as needed
+
   });
 
   it('should return 404 if user by username is not found', async () => {
-    const username = 'nonexistentuser'; // Replace with a non-existing username in your database
+    const username = 'nonexistentuser'; 
     const response = await request(app).get(`/users/username/${username}`);
     setTimeout(() => {
         expect(response.status).toBe(404);
     }, 700);
 
-    // Add more assertions as needed
+
   });
 });
 
@@ -64,7 +64,7 @@ describe('POST /users/:userId/save/:musicId', () => {
       expect(response.status).toBe(200);
     }, 700);
     
-    // Add more assertions as needed
+
   });
 
   it('should create a new user', async () => {
@@ -79,7 +79,7 @@ describe('POST /users/:userId/save/:musicId', () => {
       expect(response.status).toBe(200);
     }, 700);
 
-    // Add assertions to validate the response body, structure, etc.
+
   });
 
   it('should return 400 if username already exists during user creation', async () => {
@@ -94,7 +94,7 @@ describe('POST /users/:userId/save/:musicId', () => {
       expect(response.status).toBe(400);
     }, 700);
 
-    // Add more assertions as needed
+
   });
 
 });
@@ -111,7 +111,7 @@ describe('PUT /users/:id', () => {
       expect(response.status).toBe(200);
     }, 700);
 
-    // Add assertions to validate the response body, structure, etc.
+
   });
 
   it('should return 404 if user to update is not found', async () => {
@@ -125,10 +125,10 @@ describe('PUT /users/:id', () => {
       expect(response.status).toBe(404);
     }, 700);
 
-    // Add more assertions as needed
+
   });
 
-  // Add more test cases for different scenarios (empty request body, validation errors, etc.)
+
 });
 
 describe('DELETE /users/:userId/unsave/:musicId', () => {
@@ -140,7 +140,7 @@ describe('DELETE /users/:userId/unsave/:musicId', () => {
       expect(response.status).toBe(200);
     }, 700);
     
-    // Add more assertions as needed
+
   });
 
 });

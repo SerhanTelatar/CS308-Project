@@ -25,12 +25,11 @@ app.use('/', router);
 
 describe('User Ratings Routes', () => {
   test('GET /:userId should fetch ratings for a specific user', async () => {
-    const response = await request(app).get('/testUserId'); // Replace 'testUserId' with a valid user ID
+    const response = await request(app).get('/testUserId'); 
     setTimeout(() => {
       expect(response.status).toBe(200);
     }, 600);
-    
-    // Add expectations based on the expected behavior of fetching user ratings
+
   });
 
   test('POST / should add a rating for a user', async () => {
@@ -47,7 +46,7 @@ describe('User Ratings Routes', () => {
       expect(response.status).toBe(200);
     }, 600);
     
-    // Add expectations based on the expected behavior of adding a rating for a user
+
   });
 
   test('PUT / should update a rating for a user', async () => {
@@ -65,7 +64,6 @@ describe('User Ratings Routes', () => {
       expect(response.status).toBe(200);
     }, 600);
     
-    // Add expectations based on the expected behavior of updating a rating for a user
   });
 
   test('DELETE / should delete a rating for a user', async () => {
@@ -81,7 +79,7 @@ describe('User Ratings Routes', () => {
       expect(response.status).toBe(200);
     }, 600);
     
-    // Add expectations based on the expected behavior of deleting a rating for a user
+
   });
 
   test('GET /:userId should return 404 for a non-existing user', async () => {
@@ -94,7 +92,7 @@ describe('User Ratings Routes', () => {
   
   test('POST / should return 400 for missing required fields in the request body', async () => {
     const invalidRatingData = {
-      // Missing userId, musicId, and rating
+
     };
   
     const response = await request(app)
@@ -109,11 +107,10 @@ describe('User Ratings Routes', () => {
   
   test('PUT / should return 400 for missing required fields in the request body', async () => {
     const invalidRatingData = {
-      // Missing userId, musicId, rating, and artistId
+      
     };
-  
     const response = await request(app)
-      .put('/')
+      .put('/rate')
       .send(invalidRatingData);
 
     setTimeout(() => {
@@ -141,10 +138,10 @@ describe('User Ratings Routes', () => {
   });
   
   test('DELETE / should return 400 for missing required fields in the request body', async () => {
-    const invalidDeleteRatingData = {
-      // Missing userId and musicId
-    };
   
+    const invalidDeleteRatingData = {
+      
+    };
     const response = await request(app)
       .delete('/')
       .send(invalidDeleteRatingData);
