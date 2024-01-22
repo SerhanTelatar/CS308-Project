@@ -23,6 +23,9 @@ const playlist = require("./router/playlist")
 const csv = require("./router/csv")
 const notification = require("./router/notifications")
 const save = require("./router/save")
+const analysis = require("./router/analysis")
+const image = require("./router/image")
+
 
 dotenv.config();
 // Middleware
@@ -56,6 +59,8 @@ app.use("/playlist", playlist)
 app.use("/csv", csv)
 app.use("/notification", notification)
 app.use("/save", save)
+app.use("/analysis", analysis)
+app.use("/image", image)
 
 
 // Error handling middleware

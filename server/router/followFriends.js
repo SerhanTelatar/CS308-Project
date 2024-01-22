@@ -29,48 +29,71 @@ router.get('/search/:query', async (req, res) => {
 });
 
 router.get('/following/:userId', async (req, res) => {
-    const { userId } = req.params;
-  
-    try {
-      const userRef = db.collection('users').doc(userId);
-      const followingSnapshot = await userRef.collection('following').get();
-  
-      const followingList = [];
-      followingSnapshot.forEach((doc) => {
-        followingList.push({
-          id: doc.id,
-          data: doc.data()
-        });
-      });
-  
-      res.json(followingList);
-    } catch (error) {
-      console.error('Error getting following list', error);
-      res.status(500).json({ error: 'Error getting following list' });
+  const { userId } = req.params;
+
+  try {
+    const userRef = db.collection('users').doc(userId);
+    const userDoc = await userRef.get();
+
+    if (!userDoc.exists) {
+      return res.status(404).json({ message: 'User not found' });
     }
-  });
+
+    const userFollowingIds = userDoc.data().following || [];
+    const followingList = [];
+
+    // Retrieve details of each user that the current user is following
+    for (const followingId of userFollowingIds) {
+      const followingUserRef = db.collection('users').doc(followingId);
+      const followingUserDoc = await followingUserRef.get();
+
+      if (followingUserDoc.exists) {
+        followingList.push(
+            followingUserDoc.id
+        );
+      }
+    }
+
+    res.json(followingList);
+  } catch (error) {
+    console.error('Error getting following list', error);
+    res.status(500).json({ error: 'Error getting following list' });
+  }
+});
+
   
-  router.get('/followers/:userId', async (req, res) => {
-    const { userId } = req.params;
-  
-    try {
-      const userRef = db.collection('users').doc(userId);
-      const followersSnapshot = await userRef.collection('followers').get();
-  
-      const followersList = [];
-      followersSnapshot.forEach((doc) => {
+router.get('/followers/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const userRef = db.collection('users').doc(userId);
+    const userDoc = await userRef.get();
+
+    if (!userDoc.exists) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const userFollowersIds = userDoc.data().followers || [];
+    const followersList = [];
+
+    // Retrieve details of each user following the current user
+    for (const followerId of userFollowersIds) {
+      const followerUserRef = db.collection('users').doc(followerId);
+      const followerUserDoc = await followerUserRef.get();
+
+      if (followerUserDoc.exists) {
         followersList.push({
-          id: doc.id,
-          data: doc.data()
+          id: followerUserDoc.id
         });
-      });
-  
-      res.json(followersList);
-    } catch (error) {
-      console.error('Error getting followers list', error);
-      res.status(500).json({ error: 'Error getting followers list' });
+      }
     }
-  });
+
+    res.json(followersList);
+  } catch (error) {
+    console.error('Error getting followers list', error);
+    res.status(500).json({ error: 'Error getting followers list' });
+  }
+});
 
   router.post('/follow/:friendId/:userId', async (req, res) => {
     const { friendId, userId } = req.params;

@@ -77,6 +77,50 @@ router.post('/upload/:userId', upload.single('csvFile'), (req, res) => {
       res.status(500).send(`Error processing CSV file: ${error.message}`);
     }
   });
+
+  router.get('/export/:userId/music', async (req, res) => {
+    const userId = req.params.userId;
+
+    try {
+        const userRef = db.collection('users').doc(userId);
+        const userDoc = await userRef.get();
+
+        if (!userDoc.exists) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const userData = userDoc.data();
+        const savedMusics = userData.saved || [];
+
+        const musicDetails = [];
+        for (const musicId of savedMusics) {
+            const musicRef = db.collection('music').doc(musicId);
+            const musicDoc = await musicRef.get();
+
+            if (musicDoc.exists) {
+                const musicData = musicDoc.data();
+                musicDetails.push({
+                    id: musicDoc.id,
+                    musicName: musicData.musicName,
+                    musicType: musicData.musicType,
+                    artist: musicData.artist
+                });
+            }
+        }
+
+        // Convert musicDetails to CSV format
+        const json2csvParser = new Parser({ fields: ['id', 'musicName', 'musicType', 'artist'] });
+        const csv = json2csvParser.parse(musicDetails);
+
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', `attachment; filename=user_${userId}_saved_music_data.csv`);
+        res.status(200).send(csv);
+    } catch (error) {
+        console.error('Error exporting saved music data to CSV', error);
+        res.status(500).json({ error: 'Error exporting saved music data to CSV' });
+    }
+});
+
   
 
   module.exports = router
