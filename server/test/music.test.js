@@ -30,7 +30,6 @@ describe('Music Routes', () => {
     setTimeout(() => {
       expect(response.status).toBe(200);
     }, 550);
-    
   });
 
   test('GET /:id should get specific music by ID from Firestore', async () => {
@@ -75,5 +74,63 @@ describe('Music Routes', () => {
       expect(response.status).toBe(200);
     }, 1200);
     // Add expectations based on the expected behavior of deleting music
+  });
+
+  test('GET /user-music/:userId should get all music added by a specific user', async () => {
+    const response = await request(app).get('/user-music/9fKpPcrHOGPHARWQJwzo'); // Replace 'testUserId' with a valid user ID
+
+    setTimeout(() => {
+      expect(response.status).toBe(200);
+      // Add expectations based on the expected behavior of retrieving user-specific music
+    }, 1200);
+  });
+
+  test('POST /add-music/:userId should add new music with optional personal rating to Firestore', async () => {
+    const newMusicDataWithRating = {
+      musicName: 'Test Song',
+      musicType: 'Pop',
+      artist: 'Test Artist',
+      userId: 'user123',
+      personalRating: 4, // Add a personal rating to test
+    };
+
+    const response = await request(app)
+      .post('/add-music/9fKpPcrHOGPHARWQJwzo')
+      .send(newMusicDataWithRating);
+
+    setTimeout(() => {
+      expect(response.status).toBe(200);
+      // Add expectations based on the expected behavior of adding new music with a personal rating
+    }, 1200);
+  });
+
+  test('GET /search-music/:text should handle no matching tracks found', async () => {
+    const response = await request(app).get('/search-music/123123');
+
+    setTimeout(() => {
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual([]);
+    }, 1200);
+    // Add expectations based on the expected behavior of handling no matching tracks found
+  });
+
+  test('DELETE /delete-music/:musicId/:userId should handle permission denied when deleting other user\'s music', async () => {
+    // Assume 'testUserId' is not the same as the user who added the music 'testMusicId'
+    const response = await request(app).delete('/delete-music/v0Ji35ueIRKhegddJS7B/9fKpPcrHOGPHARWQJwzo');
+
+    setTimeout(() => {
+      expect(response.status).toBe(403);
+      // Add expectations based on the expected behavior of handling permission denied
+    }, 1200);
+  });
+
+  test('DELETE /delete-music/:musicId/:userId should handle music not found', async () => {
+    // Replace 'nonexistentMusicId' and 'testUserId' with IDs that do not exist in the database
+    const response = await request(app).delete('/delete-music/123123/9fKpPcrHOGPHARWQJwzo');
+
+    setTimeout(() => {
+      expect(response.status).toBe(404);
+      // Add expectations based on the expected behavior of handling music not found
+    }, 1200);
   });
 });

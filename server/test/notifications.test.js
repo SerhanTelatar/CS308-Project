@@ -45,6 +45,33 @@ describe('GET /notificationsOfUser/:userId', () => {
     
   });
 
+  it('should handle errors when fetching notifications', async () => {
+    const userId = 'errorUser';
+    const response = await request(app).get(`/notificationsOfUser/${userId}`);
+    setTimeout(() => {
+      expect(response.status).toBe(500);
+      expect(response.body).toHaveProperty('error');
+    }, 1200);
+  });
+
+  it('should handle unexpected server errors during notification retrieval', async () => {
+    // Mocking an unexpected error during the notification retrieval process
+    jest.spyOn(admin, 'firestore').mockImplementation(() => ({
+      collection: jest.fn(() => ({
+        where: jest.fn(() => {
+          throw new Error('Unexpected error during retrieval');
+        }),
+      })),
+    }));
+
+    const userId = 'unexpectedErrorUser';
+    const response = await request(app).get(`/notificationsOfUser/${userId}`);
+    setTimeout(() => {
+      expect(response.status).toBe(500);
+      expect(response.body).toHaveProperty('error');
+    }, 1200);
+  });
+
 });
 
 describe('PUT /notificationsOfUser/close/:notificationId', () => {
@@ -64,6 +91,15 @@ describe('PUT /notificationsOfUser/close/:notificationId', () => {
       expect(response.status).toBe(404);
     }, 1200);
 
+  });
+
+  it('should handle errors when closing a notification', async () => {
+    const notificationId = 'errorNotification';
+    const response = await request(app).put(`/notificationsOfUser/close/${notificationId}`);
+    setTimeout(() => {
+      expect(response.status).toBe(500);
+      expect(response.body).toHaveProperty('error');
+    }, 1200);
   });
 
  

@@ -35,7 +35,7 @@ describe('GET /users/:userId', () => {
   });
 
   it('should return 404 if user is not found', async () => {
-    const userId = 'qqweqweqwqeqwe'; // Replace with a non-existing user ID in your database
+    const userId = 'qqweqweqwqeqwe'; 
     const response = await request(app).get(`/users/${userId}`);
     setTimeout(() => {
       expect(response.status).toBe(404);
@@ -44,13 +44,21 @@ describe('GET /users/:userId', () => {
     // Add more assertions as needed
   });
 
-  // Add more test cases for different scenarios (empty saved music, error cases, etc.)
+  it('should return 404 if user by username is not found', async () => {
+    const username = 'nonexistentuser'; // Replace with a non-existing username in your database
+    const response = await request(app).get(`/users/username/${username}`);
+    setTimeout(() => {
+        expect(response.status).toBe(404);
+    }, 700);
+
+    // Add more assertions as needed
+  });
 });
 
 describe('POST /users/:userId/save/:musicId', () => {
   it('should save music for a user', async () => {
-    const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with an existing user ID in your database
-    const musicId = 'JU5Xr0IwRk8vd8xHhzW9'; // Replace with an existing music ID in your database
+    const userId = '9fKpPcrHOGPHARWQJwzo'; 
+    const musicId = 'JU5Xr0IwRk8vd8xHhzW9'; 
     const response = await request(app).post(`/users/${userId}/save/${musicId}`);
     setTimeout(() => {
       expect(response.status).toBe(200);
@@ -59,13 +67,74 @@ describe('POST /users/:userId/save/:musicId', () => {
     // Add more assertions as needed
   });
 
-  // Add more test cases for scenarios like trying to save already saved music, error cases, etc.
+  it('should create a new user', async () => {
+    const newUser = {
+      name: 'New User',
+      username: 'newuser',
+      password: 'password123',
+    };
+
+    const response = await request(app).post('/users').send(newUser);
+    setTimeout(() => {
+      expect(response.status).toBe(200);
+    }, 700);
+
+    // Add assertions to validate the response body, structure, etc.
+  });
+
+  it('should return 400 if username already exists during user creation', async () => {
+    const existingUser = {
+      name: 'admin',
+      username: 'admin',
+      password: 'admin',
+    };
+
+    const response = await request(app).post('/users').send(existingUser);
+    setTimeout(() => {
+      expect(response.status).toBe(400);
+    }, 700);
+
+    // Add more assertions as needed
+  });
+
+});
+
+describe('PUT /users/:id', () => {
+  it('should update user details by ID', async () => {
+    const userId = '9fKpPcrHOGPHARWQJwzo'; 
+    const updatedData = {
+      name: 'Updated Name',
+    };
+
+    const response = await request(app).put(`/users/${userId}`).send(updatedData);
+    setTimeout(() => {
+      expect(response.status).toBe(200);
+    }, 700);
+
+    // Add assertions to validate the response body, structure, etc.
+  });
+
+  it('should return 404 if user to update is not found', async () => {
+    const nonExistingUserId = 'qqweqweqwqeqwe'; 
+    const updatedData = {
+      name: 'Updated Name',
+    };
+
+    const response = await request(app).put(`/users/${nonExistingUserId}`).send(updatedData);
+    setTimeout(() => {
+      expect(response.status).toBe(404);
+    }, 700);
+
+    // Add more assertions as needed
+  });
+
+  // Add more test cases for different scenarios (empty request body, validation errors, etc.)
 });
 
 describe('DELETE /users/:userId/unsave/:musicId', () => {
   it('should remove saved music for a user', async () => {
-    const userId = '9fKpPcrHOGPHARWQJwzo'; // Replace with an existing user ID in your database
-    const musicId = 'JU5Xr0IwRk8vd8xHhzW9'; // Replace with an existing music ID in your database
+    const userId = '9fKpPcrHOGPHARWQJwzo'; 
+    const musicId = 'JU5Xr0IwRk8vd8xHhzW9'; 
     const response = await request(app).delete(`/users/${userId}/unsave/${musicId}`);
     setTimeout(() => {
       expect(response.status).toBe(200);
@@ -74,5 +143,4 @@ describe('DELETE /users/:userId/unsave/:musicId', () => {
     // Add more assertions as needed
   });
 
-  // Add more test cases for scenarios like trying to remove non-existing music, error cases, etc.
 });
