@@ -31,7 +31,6 @@ describe('User Relationship Routes', () => {
       expect(response.status).toBe(200);
     }, 650);
     
-    // Add expectations based on the expected behavior when getting following list
   });
 
   test('GET /followers/:userId should get followers list', async () => {
@@ -63,6 +62,37 @@ describe('User Relationship Routes', () => {
     
   });
 
+  test('POST /accept/:notificationId should accept a follow request', async () => {
+    const response = await request(app).post('/accept/POiyHn3PXaWVXAF1HUtr'); // Replace 'notificationId' with a valid notification ID
+    setTimeout(() => {
+      expect(response.status).toBe(200);
+    }, 650);
+    // Add expectations based on the expected behavior when accepting a follow request
+  });
+  
+  test('POST /accept/:notificationId should handle errors', async () => {
+    const response = await request(app).post('/accept/123123'); // Replace 'invalidNotificationId' with an invalid notification ID
+    setTimeout(() => {
+      expect(response.status).toBe(500);
+    }, 650);
+  });
+
+  test('POST /reject/:notificationId should reject a follow request', async () => {
+    const response = await request(app).post('/reject/POiyHn3PXaWVXAF1HUtr'); // Replace 'notificationId' with a valid notification ID
+    setTimeout(() => {
+      expect(response.status).toBe(200);
+    }, 650);
+
+  });
+  
+  test('POST /reject/:notificationId should handle errors', async () => {
+    const response = await request(app).post('/reject/123123'); // Replace 'invalidNotificationId' with an invalid notification ID
+    setTimeout(() => {
+      expect(response.status).toBe(500);
+    }, 650);
+
+
+  });
   
 
   

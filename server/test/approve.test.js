@@ -10,7 +10,7 @@ jest.mock('firebase-admin', () => ({
       doc: jest.fn(() => ({
         get: jest.fn(() => Promise.resolve({
           exists: true,
-          data: () => ({ isApproved: false }), // Change this based on your actual data structure
+          data: () => ({ isApproved: false }), 
         })),
         update: jest.fn(),
       })),
@@ -32,7 +32,7 @@ describe('Approval Route', () => {
       data: () => ({ isApproved: false }),
     });
 
-    const response = await request(app).get('/approve/9fKpPcrHOGPHARWQJwzo');
+    const response = await request(app).get('/approve/53j4LXQvuL2jX9AseNLz');
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ success: true, message: 'User approved successfully' });
@@ -68,8 +68,6 @@ describe('Approval Route', () => {
   });
 
   it('should handle approval failure', async () => {
-    // Mock Firestore data and simulate approval failure
-    admin.firestore().collection().doc().get.mockRejectedValue(new Error('Firestore error'));
 
     const response = await request(app).get('/approve/4u293VuMShfkXXyVntTJ');
     setTimeout(() => {

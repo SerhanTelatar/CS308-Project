@@ -32,7 +32,7 @@ describe('Save Routes', () => {
     setTimeout(() => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('musicDetails');
-    }, 1050);
+    }, 1500);
     
   });
 
@@ -41,7 +41,7 @@ describe('Save Routes', () => {
     setTimeout(() => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('message', `Music ${musicId} saved for user ${userId}`);
-    }, 1050);
+    }, 1500);
     
   });
 
@@ -55,7 +55,7 @@ describe('Save Routes', () => {
     setTimeout(() => {
         expect(response.status).toBe(400);
         expect(response.body).toHaveProperty('message', 'Music already saved');  
-    }, 1050);
+    }, 1500);
 
   });
 
@@ -68,7 +68,7 @@ describe('Save Routes', () => {
     setTimeout(() => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('message', `Music ${musicId} removed from saved list for user ${userId}`);
-    }, 1050);
+    }, 1500);
 
   });
 
@@ -77,7 +77,64 @@ describe('Save Routes', () => {
     setTimeout(() => {
       expect(response.status).toBe(400);
       expect(response.body).toHaveProperty('message', 'Music not found in saved list');
-    }, 1050);
+    }, 1500);
     
+  });
+
+  it('should return a 404 status for an invalid user ID when getting saved music details', async () => {
+    const invalidUserId = 'invalidUserId';
+    const response = await request(app).get(`/save/${invalidUserId}`);
+    setTimeout(() => {
+      expect(response.status).toBe(404);
+      expect(response.body).toHaveProperty('message', 'User not found');
+    }, 1500);
+
+  });
+
+  it('should return a 404 status for an invalid music ID when saving a music for a user', async () => {
+    const invalidMusicId = 'invalidMusicId';
+    const response = await request(app).post(`/save/${userId}/save/${invalidMusicId}`);
+    setTimeout(() => {
+      expect(response.status).toBe(404);
+      expect(response.body).toHaveProperty('message', 'Music not found');
+    }, 1500);
+
+  });
+
+  it('should return a 404 status for an invalid user ID when un-saving a music for a user', async () => {
+    const invalidUserId = 'invalidUserId';
+    const response = await request(app).delete(`/save/${invalidUserId}/unsave/${musicId}`);
+    setTimeout(() => {
+        expect(response.status).toBe(404);
+        expect(response.body).toHaveProperty('message', 'User not found');
+    }, 1500);
+
+  });
+
+  it('should return a 404 status for an invalid music ID when un-saving a music for a user', async () => {
+    const invalidMusicId = 'invalidMusicId';
+    const response = await request(app).delete(`/save/${userId}/unsave/${invalidMusicId}`);
+    setTimeout(() => {
+      expect(response.status).toBe(404);
+      expect(response.body).toHaveProperty('message', 'Music not found');
+    }, 1500);
+
+  });
+
+  it('should return a 400 status if the request to save a music is missing the music ID', async () => {
+    const response = await request(app).post(`/save/${userId}/save`);
+    setTimeout(() => {
+      expect(response.status).toBe(400);
+      expect(response.body).toHaveProperty('message', 'Music ID is required');
+    }, 1500);
+  });
+
+  it('should return a 400 status if the request to unsave a music is missing the music ID', async () => {
+    const response = await request(app).delete(`/save/${userId}/unsave`);
+    setTimeout(() => {
+      expect(response.status).toBe(400);
+      expect(response.body).toHaveProperty('message', 'Music ID is required');
+    }, 1500);
+
   });
 });

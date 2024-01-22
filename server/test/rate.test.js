@@ -83,4 +83,92 @@ describe('User Ratings Routes', () => {
     
     // Add expectations based on the expected behavior of deleting a rating for a user
   });
+
+  test('GET /:userId should return 404 for a non-existing user', async () => {
+    const response = await request(app).get('/nonExistingUserId');
+    setTimeout(() => {
+      expect(response.status).toBe(404);
+    }, 600);
+    
+  });
+  
+  test('POST / should return 400 for missing required fields in the request body', async () => {
+    const invalidRatingData = {
+      // Missing userId, musicId, and rating
+    };
+  
+    const response = await request(app)
+      .post('/')
+      .send(invalidRatingData);
+
+    setTimeout(() => {
+        expect(response.status).toBe(400);
+    }, 600);
+    
+  });
+  
+  test('PUT / should return 400 for missing required fields in the request body', async () => {
+    const invalidRatingData = {
+      // Missing userId, musicId, rating, and artistId
+    };
+  
+    const response = await request(app)
+      .put('/')
+      .send(invalidRatingData);
+
+    setTimeout(() => {
+      expect(response.status).toBe(400);
+    }, 600);
+    
+  });
+  
+  test('PUT / should return 404 for updating a non-existing rating', async () => {
+    const nonExistingRatingData = {
+      userId: 'testUserId',
+      musicId: 'nonExistingMusicId',
+      rating: 5,
+      artistId: 'testArtistId',
+    };
+  
+    const response = await request(app)
+      .put('/')
+      .send(nonExistingRatingData);
+
+    setTimeout(() => {
+      expect(response.status).toBe(404);
+    }, 600);
+    
+  });
+  
+  test('DELETE / should return 400 for missing required fields in the request body', async () => {
+    const invalidDeleteRatingData = {
+      // Missing userId and musicId
+    };
+  
+    const response = await request(app)
+      .delete('/')
+      .send(invalidDeleteRatingData);
+
+    setTimeout(() => {
+      expect(response.status).toBe(400);
+    }, 600);
+    
+  });
+  
+  test('DELETE / should return 404 for deleting a non-existing rating', async () => {
+    const nonExistingDeleteRatingData = {
+      userId: 'testUserId',
+      musicId: 'nonExistingMusicId',
+    };
+  
+    const response = await request(app)
+      .delete('/')
+      .send(nonExistingDeleteRatingData);
+
+    setTimeout(() => {
+      expect(response.status).toBe(404);
+    }, 600);
+    
+  });
+  
 });

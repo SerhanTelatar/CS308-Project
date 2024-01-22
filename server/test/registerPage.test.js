@@ -71,4 +71,49 @@ describe('Registration Route', () => {
     
     // Add further expectations based on the expected behavior when the username already exists
   });
+
+  test('POST / should handle invalid input data', async () => {
+    const userData = {
+      name: 'Test User',
+      username: 'testuser',
+      email: 'test@example.com',
+      password: 'testpassword',
+    };
+  
+    const response = await request(app)
+      .post('/')
+      .send(userData);
+  
+    setTimeout(() => {
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.message).toBe('Invalid input data');
+      // Add expectations for the specific validation errors returned in the response
+    }, 1200);
+  });
+  
+  test('POST / should handle registration failure', async () => {
+    const userData = {
+      name: 'Test User',
+      username: 'testuser',
+      email: 'test@example.com',
+      password: 'testpassword',
+    };
+  
+    // Simulate a registration failure, for example, by rejecting the Firestore add operation
+    jest.spyOn(admin.firestore().collection('users'), 'add').mockRejectedValue(new Error('Registration failed'));
+  
+    const response = await request(app)
+      .post('/')
+      .send(userData);
+  
+    setTimeout(() => {
+      expect(response.status).toBe(500);
+      expect(response.body.success).toBe(false);
+      expect(response.body.message).toBe('Registration failed: Registration failed');
+    }, 1200);
+    // Reset the mock to avoid affecting other tests
+    admin.firestore().collection('users').add.mockReset();
+  });
+  
 });
