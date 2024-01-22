@@ -45,6 +45,30 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// Get all music added by a specific user
+router.get('/user-music/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    // Query Firestore to get all music added by the specified user
+    const snapshot = await db.collection('music')
+      .where('addedByUserId', '==', userId)
+      .get();
+
+    const userMusicList = [];
+    snapshot.forEach(doc => {
+      userMusicList.push({
+        id: doc.id,
+        data: doc.data()
+      });
+    });
+
+    res.json(userMusicList);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 router.post('/add-music/:userId', async (req, res) => {
   try {

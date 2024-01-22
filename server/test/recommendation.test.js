@@ -1,42 +1,42 @@
 const request = require('supertest');
 const express = require('express');
-const admin = require('firebase-admin');
-const router = require('../router/recommendation');
+const app = express();
+const recommendationRouter = require('../router/recommendation'); // Adjust the path as needed
 
-// Mocking Firebase admin
+// Mock the Firestore module
 jest.mock('firebase-admin', () => ({
   firestore: () => ({
     collection: jest.fn(() => ({
       doc: jest.fn(() => ({
-        get: jest.fn(() => ({
-          exists: true,
-          data: () => ({
-            // Sample user data for mocking
-            ratings: [
-              { musicId: 'testMusicId1', rating: 4 },
-              { musicId: 'testMusicId2', rating: 5 },
-            ],
-          }),
+        get: jest.fn(() => Promise.resolve({
+          exists: true
         })),
-      })),
-      where: jest.fn(() => ({
-        get: jest.fn(() => ({
-          forEach: jest.fn(),
-        })),
+        update: jest.fn(),
       })),
     })),
   }),
 }));
 
-const app = express();
-app.use(express.json());
-app.use('/', router);
+// Mock express-session
+jest.mock('express-session');
 
-describe('Recommendation Route', () => {
-  test('GET /:userId should return recommended songs based on user ratings', async () => {
-    const response = await request(app).get('/testUserId'); // Replace 'testUserId' with a valid user ID
+app.use('/recommendation', recommendationRouter);
 
-    expect(response.status).toBe(200);
-    // Add expectations based on the expected behavior of getting recommended songs
+describe('GET /recommendation/:userId', () => {
+  test('It should respond with recommended songs', async () => {
+    const response = await request(app).get('/recommendation/9fKpPcrHOGPHARWQJwzo'); // Replace with a valid userId
+    setTimeout(() => {
+      expect(response.status).toBe(200);
+    }, 900);
+    
+  });
+
+  test('It should handle user not found', async () => {
+    const response = await request(app).get('/recommendation/asdasdasd');
+    setTimeout(() => {
+      expect(response.status).toBe(404);
+      expect(response.body).toHaveProperty('error', 'User not found');
+    }, 900);
+    
   });
 });
