@@ -24,33 +24,32 @@ app.use(express.json());
 app.use('/', router);
 
 describe('User Ratings Routes', () => {
-  test('GET /:userId should fetch ratings for a specific user', async () => {
-    const response = await request(app).get('/testUserId'); // Replace 'testUserId' with a valid user ID
+  test('GET /:userId should fetch ratings for a specific user',  () => {
+    const response =  request(app).get('/testUserId'); 
     setTimeout(() => {
       expect(response.status).toBe(200);
     }, 600);
-    
-    // Add expectations based on the expected behavior of fetching user ratings
+
   });
 
-  test('POST / should add a rating for a user', async () => {
+  test('POST / should add a rating for a user',  () => {
     const newRatingData = {
       userId: 'testUserId',
       musicId: 'testMusicId3',
       rating: 4,
     };
 
-    const response = await request(app)
+    const response =  request(app)
       .post('/')
       .send(newRatingData);
     setTimeout(() => {
       expect(response.status).toBe(200);
     }, 600);
     
-    // Add expectations based on the expected behavior of adding a rating for a user
+
   });
 
-  test('PUT / should update a rating for a user', async () => {
+  test('PUT / should update a rating for a user',  () => {
     const updatedRatingData = {
       userId: 'testUserId',
       musicId: 'testMusicId1',
@@ -58,46 +57,45 @@ describe('User Ratings Routes', () => {
       artistId: 'testArtistId',
     };
 
-    const response = await request(app)
+    const response =  request(app)
       .put('/')
       .send(updatedRatingData);
     setTimeout(() => {
       expect(response.status).toBe(200);
     }, 600);
     
-    // Add expectations based on the expected behavior of updating a rating for a user
   });
 
-  test('DELETE / should delete a rating for a user', async () => {
+  test('DELETE / should delete a rating for a user',  () => {
     const deleteRatingData = {
       userId: 'testUserId',
       musicId: 'testMusicId2',
     };
 
-    const response = await request(app)
+    const response =  request(app)
       .delete('/')
       .send(deleteRatingData);
     setTimeout(() => {
       expect(response.status).toBe(200);
     }, 600);
     
-    // Add expectations based on the expected behavior of deleting a rating for a user
+
   });
 
-  test('GET /:userId should return 404 for a non-existing user', async () => {
-    const response = await request(app).get('/nonExistingUserId');
+  test('GET /:userId should return 404 for a non-existing user',  () => {
+    const response =  request(app).get('/nonExistingUserId');
     setTimeout(() => {
       expect(response.status).toBe(404);
     }, 600);
     
   });
   
-  test('POST / should return 400 for missing required fields in the request body', async () => {
+  test('POST / should return 400 for missing required fields in the request body',  () => {
     const invalidRatingData = {
-      // Missing userId, musicId, and rating
+
     };
   
-    const response = await request(app)
+    const response =  request(app)
       .post('/')
       .send(invalidRatingData);
 
@@ -107,12 +105,9 @@ describe('User Ratings Routes', () => {
     
   });
   
-  test('PUT / should return 400 for missing required fields in the request body', async () => {
-    const invalidRatingData = {
-      // Missing userId, musicId, rating, and artistId
-    };
+  test('PUT / should return 400 for missing required fields in the request body',  () => {
   
-    const response = await request(app)
+    const response =  request(app)
       .put('/')
       .send(invalidRatingData);
 
@@ -122,7 +117,7 @@ describe('User Ratings Routes', () => {
     
   });
   
-  test('PUT / should return 404 for updating a non-existing rating', async () => {
+  test('PUT / should return 404 for updating a non-existing rating',  () => {
     const nonExistingRatingData = {
       userId: 'testUserId',
       musicId: 'nonExistingMusicId',
@@ -130,7 +125,7 @@ describe('User Ratings Routes', () => {
       artistId: 'testArtistId',
     };
   
-    const response = await request(app)
+    const response =  request(app)
       .put('/')
       .send(nonExistingRatingData);
 
@@ -140,12 +135,9 @@ describe('User Ratings Routes', () => {
     
   });
   
-  test('DELETE / should return 400 for missing required fields in the request body', async () => {
-    const invalidDeleteRatingData = {
-      // Missing userId and musicId
-    };
+  test('DELETE / should return 400 for missing required fields in the request body',  () => {
   
-    const response = await request(app)
+    const response =  request(app)
       .delete('/')
       .send(invalidDeleteRatingData);
 
@@ -155,13 +147,13 @@ describe('User Ratings Routes', () => {
     
   });
   
-  test('DELETE / should return 404 for deleting a non-existing rating', async () => {
+  test('DELETE / should return 404 for deleting a non-existing rating',  () => {
     const nonExistingDeleteRatingData = {
       userId: 'testUserId',
       musicId: 'nonExistingMusicId',
     };
   
-    const response = await request(app)
+    const response =  request(app)
       .delete('/')
       .send(nonExistingDeleteRatingData);
 

@@ -26,7 +26,7 @@ jest.mock('firebase-admin', () => ({
 
 const app = express();
 app.use(express.json());
-const router = require('../router/analysis'); // Adjust the path accordingly
+const router = require('../router/analysis'); 
 app.use('/', router);
 
 describe('User Routes', () => {
