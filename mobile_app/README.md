@@ -1,5 +1,7 @@
 # Riffy's Mobile Application
 
+authors: Muslim Malsagov and Selin Ağan
+
 ## Overview
 
 This directory contains all the source code and resources for the mobile application of Riffy. The mobile app is designed to provide users with a seamless music experience, allowing them to explore, rate, and manage their favorite music, interact with friends, and enjoy personalized recommendations on the go.
