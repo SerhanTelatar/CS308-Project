@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:provider/provider.dart';
+import 'package:mobile_app/providers/user_provider.dart';
 import 'package:mobile_app/components/spotify_login_button.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,46 +15,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  Future<void> _spotifyLogin() async {
-    final baseUrl = "http://10.0.2.2:4200";
-    final loginEndpoint = "/spotifyAc";
-
-    try {
-      final response = await http.post(
-        Uri.parse('$baseUrl$loginEndpoint'),
-      );
-
-      if (response.statusCode == 200) {
-        // Successful login
-        print('Login successful');
-        Navigator.pushReplacementNamed(context, '/home');
-      } else {
-        // Handle login failure
-        print(
-            'Login failed with status code ${response.statusCode}: ${response.body}');
-        // Extract error message from response body
-        final Map<String, dynamic> responseBody = json.decode(response.body);
-        final String errorMessage = responseBody['message'];
-
-        // Provide user feedback with the specific error message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('$errorMessage'),
-            duration: Duration(seconds: 3),
-          ),
-        );
-      }
-    } catch (e) {
-      // Handle other exceptions (e.g., network issues)
-      print('Exception during login: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Login failed: $e'),
-          duration: Duration(seconds: 3),
-        ),
-      );
-    }
-  }
 
   Future<void> _login(String username, String password) async {
     final baseUrl = "http://10.0.2.2:4200";
@@ -71,22 +32,24 @@ class _LoginPageState extends State<LoginPage> {
       if (response.statusCode == 200) {
         // Successful login
         print('Login successful');
-        Navigator.pushReplacementNamed(context, '/home');
+        print('Response Body: ${response.body}');
+        // Retrieve userData from the response
+        final Map<String, dynamic> userData = json.decode(response.body);
+
+        final String userId = userData['id']; // Replace 'userId' with the actual key in your userData
+        
+
+        print(userId);
+        await Provider.of<UserProvider>(context, listen: false).fetchNotifications(userId);
+
+        // Navigate to the profile page and pass the userData
+        Provider.of<UserProvider>(context, listen: false).setUserData(userData);
+        Navigator.pushReplacementNamed(context, '/profile');
       } else {
         // Handle login failure
         print(
             'Login failed with status code ${response.statusCode}: ${response.body}');
-        // Extract error message from response body
-        final Map<String, dynamic> responseBody = json.decode(response.body);
-        final String errorMessage = responseBody['message'];
-
-        // Provide user feedback with the specific error message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('$errorMessage'),
-            duration: Duration(seconds: 3),
-          ),
-        );
+        // ... handle other cases as needed
       }
     } catch (e) {
       // Handle other exceptions (e.g., network issues)
@@ -148,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 16.0),
             SpotifyLoginButton(
               onPressed: () {
-                _spotifyLogin();
+                //_spotifyLogin();
               },
             ),
             const SizedBox(height: 16.0),
