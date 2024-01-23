@@ -60,7 +60,9 @@ Widget build(BuildContext context) {
             ),
             SizedBox(height: 16),
             Text(
-              userData?['username']['username']?.toString() ?? 'Unknown',
+              //userData?['username']['username']?.toString() ?? 'Unknown',
+              userData?['username']?['username']?.toString() ?? 'Unknown',
+
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),

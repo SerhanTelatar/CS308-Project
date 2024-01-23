@@ -22,7 +22,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
 
 
 
-    
+
     if (userId != null) {
       analyticsData = fetchAnalyticsData(userId);
     } else {
@@ -72,6 +72,13 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
         children: [
           Text('Average Rating: ${data['averageRating']}'),
           Text('Total Ratings: ${data['totalRatings']}'),
+          Text('Total Ratings: ${data['totalRatings']}'),
+          Text('Genre Percentage: ${data['genrePercentage']}'),
+          Text('Total Followers: ${data['totalFollowers']}'),
+          Text('Total Following: ${data['totalFollowing']}'),
+          Text('Total Saved Music: ${data['totalSavedMusic']}'),
+          Text('Saved Genre Percentage: ${data['savedMusicGenrePercentage']}'),
+          Text('Rated Artists: ${data['ratedArtists']}'),
           // Add more widgets based on your data structure
         ],
       ),
