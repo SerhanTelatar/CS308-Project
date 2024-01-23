@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/components/recommendations.dart';
+
+
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,10 +13,10 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset('assets/images/logo.png'),
-            const Text(
-              'Welcome to Riffy',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          
+            const SizedBox(height: 10), // Moved inside the Column
+            Expanded(
+              child: RecommendationsSection(),
             ),
           ],
         ),
