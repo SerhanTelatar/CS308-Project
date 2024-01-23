@@ -10,6 +10,7 @@ import 'components/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'providers/user_provider.dart';
 import 'package:mobile_app/components/app_drawer.dart';
+import 'routes/settings_page.dart';
 void main() {
   runApp(
     ChangeNotifierProvider(
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => ProfilePage(),
         '/analytics': (context) => AnalyticsPage(),
         '/mylibrary': (context) => MyLibraryPage(),
+        '/settings': (context) => settings_page(),
       },
     );
   }
